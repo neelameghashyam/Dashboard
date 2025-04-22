@@ -1,0 +1,104 @@
+<div [class.dark-mode]="darkModeService.darkMode()">
+
+<div class="header-wrapper">
+  <mat-toolbar class="header-toolbar">
+    <!-- Left-aligned elements -->
+    <div class="left-section">
+      <!-- side bar button -->
+      <button mat-icon-button class="header-icon" (click)="toggleSidenav()">
+        <mat-icon>menu</mat-icon>
+      </button>
+      <span class="app-title">Angular</span>
+    </div>
+
+   <!-- Right-aligned elements -->
+<div class="right-section">
+  <!-- full screen-->
+  <button mat-icon-button class="header-icon" (click)="toggleFullScreen()" matTooltip="Full Screen">
+    <mat-icon>fullscreen</mat-icon>
+  </button>
+
+  <!-- Dark mode toggle -->
+  <button mat-icon-button 
+          class="dark-mode-toggle"
+          (click)="darkModeService.toggle()" 
+          matTooltip="Toggle Dark Mode">
+    <mat-icon>{{ darkModeService.darkMode() ? 'dark_mode' : 'light_mode' }}</mat-icon>
+  </button>
+
+  <!-- Theme selector -->
+  <button mat-icon-button 
+          [matMenuTriggerFor]="themeMenu" 
+          matTooltip="Theme"
+          class="dark-mode-toggle">
+    <mat-icon>format_color_fill</mat-icon>
+  </button>
+  <mat-menu #themeMenu="matMenu" class="color-theme-menu">
+    @for (theme of themeService.getThemes(); track theme.id) {
+    <button mat-menu-item (click)="themeService.setTheme(theme.id)">
+      <div class="theme-menu-item">
+        <div
+          class="color-preview"
+          [style.background-color]="theme.primary"
+        ></div>
+        <span>{{ theme.displayName }}</span>
+      </div>
+    </button>
+    }
+  </mat-menu>
+
+  <!-- language -->
+  <button mat-button [matMenuTriggerFor]="languageMenu" matTooltip="Language" class="languageMenu">
+    <span>{{ currentLanguage() }}</span>
+    <mat-icon>arrow_drop_down</mat-icon>
+  </button>
+  <mat-menu #languageMenu="matMenu" class="language-menu">
+    <button mat-menu-item (click)="setLanguage('en')">
+      <span>English</span>
+    </button>
+    <button mat-menu-item (click)="setLanguage('fr')">
+      <span>French</span>
+    </button>
+  </mat-menu>
+
+  <!-- Profile -->
+  <app-user></app-user>
+</div>
+  </mat-toolbar>
+</div>
+
+<main class="main-content">
+  <mat-sidenav-container class="h-full">
+    <mat-sidenav 
+      #sidenav
+      [mode]="sidenavMode()"
+      [opened]="sidenavOpened()"
+      [style.width]="sidenavWidth()" 
+      class="transition-all duration-300"
+      [fixedInViewport]="responsiveService.isMobile()"
+      [fixedTopGap]="48">
+      <app-custom-sidenav [collapsed]="collapsed()"></app-custom-sidenav>
+    </mat-sidenav>
+    <mat-sidenav-content 
+      [style.margin-left]="responsiveService.isMobile() ? '0px' : sidenavWidth()" 
+      class="content transition-all duration-300"
+      (click)="responsiveService.isMobile() && sidenav.close()">
+      <router-outlet></router-outlet>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</main>
+
+
+<!-- footer -->
+<footer class="footer">
+  <div class="footer-content">
+    <a>© 2025 Your Angular All rights reserved.</a>
+    <div class="footer-links">
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms of Service</a>
+      <a href="#">Contact Us</a>
+    </div>
+  </div>
+</footer>
+
+</div>

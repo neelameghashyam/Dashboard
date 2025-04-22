@@ -1,0 +1,25 @@
+<div class="side-nav" 
+     [class.dark-mode]="darkModeService.darkMode()"
+     [class]="currentTheme().id + '-theme'">  <mat-nav-list>
+    <a
+      mat-list-item
+      class="menu-item"
+      *ngFor="let item of menuItems()"
+      [routerLink]="item.route"
+      routerLinkActive="selected-menu-item"
+      #rla="routerLinkActive"
+      [ngClass]="{
+        'collapsed': sideNavCollapsed() && !responsiveService.isMobile()
+      }"
+    >
+      <mat-icon 
+        [fontSet]="rla.isActive ? 'material-icons' : 'material-icons-outlined'" 
+        matListItemIcon
+        [class.dark-icon]="darkModeService.darkMode()"
+      >
+        {{ item.icon }}
+      </mat-icon>
+      <span *ngIf="!sideNavCollapsed() || responsiveService.isMobile()" class="label-text">{{ item.label }}</span>
+    </a>
+  </mat-nav-list>
+</div>

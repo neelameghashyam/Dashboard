@@ -1,0 +1,88 @@
+<form [formGroup]="userForm" (ngSubmit)="onSubmit()" class="modern-form" [class.dark-mode]="darkModeService.darkMode()">  <!-- Row 1: Name and Email -->
+  <div class="grid-2">
+    <!-- Name -->
+    <mat-form-field appearance="fill" floatLabel="always">
+      <mat-label>Full Name</mat-label>
+      <input matInput formControlName="fullName" placeholder="Full Name" required>
+      <mat-icon matSuffix>person</mat-icon>
+      @if (userForm.get('fullName')?.hasError('required') && 
+          (userForm.get('fullName')?.touched || submitted)) {
+        <mat-error>Please enter your full name</mat-error>
+      }
+    </mat-form-field>
+
+    <!-- Email -->
+    <mat-form-field appearance="fill" floatLabel="always">
+      <mat-label>Email Address</mat-label>
+      <input matInput type="email" formControlName="email" placeholder="Email" required>
+      <mat-icon matSuffix>email</mat-icon>
+      @if (userForm.get('email')?.hasError('required') && 
+          (userForm.get('email')?.touched || submitted)) {
+        <mat-error>Email is required</mat-error>
+      }
+      @if (userForm.get('email')?.hasError('email') && 
+          (userForm.get('email')?.touched || submitted)) {
+        <mat-error>Please enter a valid email</mat-error>
+      }
+    </mat-form-field>
+  </div>
+
+  <!-- Row 2: Phone and Date of Birth -->
+  <div class="grid-2">
+    <!-- Phone -->
+    <mat-form-field appearance="fill" floatLabel="always">
+      <mat-label>Phone Number</mat-label>
+      <input matInput formControlName="phone" placeholder="Phone Number" required>
+      <mat-icon matSuffix>phone</mat-icon>
+      @if (userForm.get('phone')?.hasError('required') && 
+          (userForm.get('phone')?.touched || submitted)) {
+        <mat-error>Phone number is required</mat-error>
+      }
+    </mat-form-field>
+
+    <!-- Date of Birth -->
+    <mat-form-field appearance="fill" floatLabel="always">
+      <mat-label>Date of Birth</mat-label>
+      <input matInput [matDatepicker]="picker" formControlName="dob" placeholder="Date Of Birth"required>
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+      @if (userForm.get('dob')?.hasError('required') && 
+          (userForm.get('dob')?.touched || submitted)) {
+        <mat-error>Please select your date of birth</mat-error>
+      }
+    </mat-form-field>
+  </div>
+
+  <!-- Address -->
+  <mat-form-field appearance="fill" floatLabel="always">
+    <mat-label>Full Address</mat-label>
+    <textarea matInput formControlName="address" 
+              placeholder="Address" 
+              rows="2" required></textarea>
+    @if (userForm.get('address')?.hasError('required') && 
+        (userForm.get('address')?.touched || submitted)) {
+      <mat-error>Please enter your address</mat-error>
+    }
+  </mat-form-field>
+
+  <!-- Country -->
+  <mat-form-field appearance="fill" floatLabel="always">
+    <mat-label>Country</mat-label>
+    <mat-select formControlName="country" required>
+      <mat-option value="">-- Select Country --</mat-option>
+      <mat-option *ngFor="let c of countries" [value]="c">{{ c }}</mat-option>
+    </mat-select>
+    @if (userForm.get('country')?.hasError('required') && 
+        (userForm.get('country')?.touched || submitted)) {
+      <mat-error>Please select your country</mat-error>
+    }
+  </mat-form-field>
+
+  <!-- Submit Button -->
+  <div class="submit-container">
+    <button mat-raised-button color="primary" type="submit" class="submit-btn">
+      Submit
+      <mat-icon>send</mat-icon>
+    </button>
+  </div>
+</form>
