@@ -14,7 +14,7 @@ export class ThemeService {
     {
       id: 'deep-blue-dark',
       primary: '#1976D2',
-      displayName: 'Deep Blue Dark',
+      displayName: 'Blue',
     },
     { id: 'green', primary: '#00796B', displayName: 'Green' },
     { id: 'orange', primary: '#E65100', displayName: 'Orange' },
