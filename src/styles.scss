@@ -3,12 +3,6 @@
 @use "@angular/material" as mat;
 @import "./app/themes/themes.css";
 
-:light_theme {
-  --mat-sys-primary: #e4e4e4;
-  --mat-sys-on-primary: #1c1c1c;
-  --mat-sys-surface: #ffffff;
-  --mat-sys-on-surface: #000000;
-}
 
 html {
   height: 100%;

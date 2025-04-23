@@ -79,7 +79,7 @@ export class AppComponent {
 
   sidenavWidth = computed(() => {
     if (this.responsiveService.isMobile()) return '280px';
-    return this.collapsed() ? '64px' : '280px';
+    return this.collapsed() ? '64px' : '200px';
   });
 
   sidenavMode = computed(() => {

@@ -1,7 +1,7 @@
 /* Note: Color palettes are generated from primary: #6200EE */
 .purple-theme {
   /* COLOR SYSTEM VARIABLES */
-  color-scheme: light;
+  color-scheme: light dark;
 
   /* Primary palette variables */
   --mat-sys-primary: light-dark(#6d23f9, #cfbdff);

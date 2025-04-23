@@ -11,7 +11,7 @@
   
   &.scrolled {
     .header-toolbar {
-      height: 56px; /* Maintain same height when scrolled */
+      height: 56px; 
       background-color: rgba(var(--mat-sys-primary), 0.95);
       backdrop-filter: blur(5px);
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
@@ -29,8 +29,6 @@
   background-color: var(--mat-sys-primary);
   color: var(--mat-sys-on-primary);
 
-  /* Remove the inner shadow to make it look thinner */
-  
   .left-section {
     display: flex;
     align-items: center;
@@ -50,25 +48,42 @@
   }
 
   .mat-icon-button {
-    width: 40px; /* Smaller buttons */
+    width: 40px; 
     height: 40px;
-    color: white;
+    color: var(--mat-sys-on-primary);
     
     .mat-icon {
-      font-size: 20px; /* Smaller icons */
+      font-size: 20px; 
       width: 20px;
       height: 20px;
     }
   }
 
-  .languageMenu {
+  .language-menu {
     display: flex;
     align-items: center;
-    gap: 4px;
-    margin-left: 4px; /* Reduced margin */
+    gap: 2px;
+    margin-left: 2px;
+    cursor: pointer;
     
     span {
-      font-size: 0.8rem; /* Smaller text */
+      font-size: 0.8rem;
+      font-weight: 500;
+    }
+
+    .mat-icon {
+      font-size: 20px;
+      width: 20px;
+      height: 20px;
+    }
+
+    /* Light theme (default) */
+    &:not(.dark-mode) {
+      color: rgba(0, 0, 0, 0.87);
+      
+      span, .mat-icon {
+        color: rgba(0, 0, 0, 0.87);
+      }
     }
   }
 }
@@ -125,36 +140,15 @@
     @media (max-width: 600px) {
       justify-content: center;
       flex-wrap: wrap;
-      gap: 4px;
+      gap: 2px;
     }
   }
 }
 
 /* Dark Mode Overrides */
 .dark-mode {
-  .header-toolbar {
-    background-color: var(--mat-sys-primary);
-  }
-  
-  .footer {
-    background-color: var(--mat-sys-primary);
-  }
-}
-
-/* Content Area Adjustment */
-.content {
-  padding-top: 56px; /* Header height */
-  padding-bottom: 48px; /* Footer height */
-  min-height: calc(100vh - 56px - 48px); /* Adjusted for thinner header/footer */
-}
-
-.dark-mode {
-  --mat-sys-primary: #313233;
   --mat-sys-on-primary: #ffffff;
-  --mat-sys-surface: #121212;
-  --mat-sys-on-surface: #ffffff;
   --mat-sys-background: #121212;
-  --mat-sys-on-background: #e0e0e0;
 
   /* Header specific dark mode styles */
   .header-toolbar {
@@ -166,7 +160,16 @@
         rgba(255, 255, 255, 0.1) 0%, 
         rgba(255, 255, 255, 0) 100%);
     }
+
+    .language-menu {
+      color: var(--mat-sys-on-primary);
+      
+      span, .mat-icon {
+        color: var(--mat-sys-on-primary);
+      }
+    }
   }
+
   .header-icon {
     color: white !important;
     
@@ -174,6 +177,7 @@
       color: inherit !important;
     }
   }
+
   /* Footer specific dark mode styles */
   .footer {
     background-color: var(--mat-sys-primary);
@@ -218,6 +222,12 @@
   }
 }
 
+/* Content Area Adjustment */
+.content {
+  padding-top: 56px; /* Header height */
+  padding-bottom: 48px; /* Footer height */
+  min-height: calc(100vh - 56px - 48px); /* Adjusted for thinner header/footer */
+}
 
 .theme-menu-item {
   display: flex;

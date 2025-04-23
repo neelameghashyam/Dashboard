@@ -1,7 +1,7 @@
 /* Note: Color palettes are generated from primary: #C2185B */
 .red-theme {
   /* COLOR SYSTEM VARIABLES */
-  color-scheme: light;
+  color-scheme: light dark;
 
   /* Primary palette variables */
   --mat-sys-primary: light-dark(#b90c55, #ffb1c2);

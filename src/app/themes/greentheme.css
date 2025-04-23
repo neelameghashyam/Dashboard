@@ -1,7 +1,7 @@
 /* Note: Color palettes are generated from primary: #00796B */
 .green-theme {
   /* COLOR SYSTEM VARIABLES */
-  color-scheme: light;
+  color-scheme: light dark;
 
   /* Primary palette variables */
   --mat-sys-primary: light-dark(#006b5e, #7ad7c6);

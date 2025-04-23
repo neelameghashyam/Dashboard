@@ -1,11 +1,11 @@
 /* Note: Color palettes are generated from primary: #1976D2 */
 .deep-blue-dark-theme {
   /* COLOR SYSTEM VARIABLES */
-  color-scheme: light;
+  color-scheme: light dark;
 
   /* Primary palette variables */
   --mat-sys-primary: light-dark(#005faf, #a5c8ff);
-  --mat-sys-on-primary: light-dark(#ffffff, #00315f);
+  --mat-sys-on-primary: light-dark(#005faf, #00315f);
   --mat-sys-primary-container: light-dark(#d4e3ff, #004786);
   --mat-sys-on-primary-container: light-dark(#001c3a, #d4e3ff);
   --mat-sys-inverse-primary: light-dark(#a5c8ff, #005faf);

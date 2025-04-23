@@ -21,22 +21,22 @@
     // Form field styles in dark mode
     .mat-mdc-form-field {
       .mdc-floating-label {
-        color: rgba(255, 255, 255, 0.6);
+        color: rgba(var(--mat-sys-primary-dark));
         
         &--float-above {
-          color: #7986cb;
+          color: rgba(var(--mat-sys-primary-dark));
         }
       }
 
       .mdc-text-field--filled:not(.mdc-text-field--disabled) {
-        background-color: rgba(255, 255, 255, 0.05);
+        background-color: rgba(var(--mat-sys-primary-dark), 0.95);
         
         &:hover {
-          background-color: rgba(255, 255, 255, 0.08);
+          background-color: rgba(var(--mat-sys-primary-dark), 0.95);
         }
         
         &.mdc-text-field--focused {
-          background-color: rgba(255, 255, 255, 0.05);
+          background-color: rgba(var(--mat-sys-primary-dark), 0.95);
         }
       }
 
@@ -51,21 +51,21 @@
 
     // Select panel in dark mode
     .mat-mdc-select-panel {
-      background-color: #424242;
+      background-color: rgba(var(--mat-sys-primary-dark), 0.95);
       
       .mat-mdc-option {
         color: white;
         
         &:hover:not(.mdc-list-item--disabled),
         &.mdc-list-item--selected:not(.mdc-list-item--disabled) {
-          background-color: rgba(255, 255, 255, 0.1);
+          background-color: rgba(var(--mat-sys-primary-dark), 0.95);
         }
       }
     }
 
     // Datepicker in dark mode
     .mat-datepicker-content {
-      background-color: #424242;
+      background-color: rgba(var(--mat-sys-primary-dark), 0.95);
       color: white;
       
       .mat-calendar-body-cell-content {
@@ -77,27 +77,7 @@
         color: white;
       }
     }
-    .submit-container {
-      margin-top: 4px;
-      display: flex;
-      justify-content: flex-end;
-      
-      .submit-btn {
-        background: white;
-
-        color: rgb(10, 10, 10);
-        padding: 0 16px;
-        height: 32px;
-        font-weight: 500;
-        letter-spacing: 0.5px;
-        
-        .mat-icon {
-          color: rgb(20, 20, 20);
-          margin-left: 4px;
-          font-size: 16px;
-        }
-      }
-    }
+   
 
   }
 }

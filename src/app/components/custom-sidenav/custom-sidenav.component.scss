@@ -53,19 +53,19 @@
 
   .selected-menu-item {
     background: var(--mat-sys-primary-light) !important;
-    color: var(--mat-sys-on-primary) !important;
+    color: var(--mat-sys-primary) !important;
 
     .mat-icon {
-      color: var(--mat-sys-on-primary) !important;
+      color: var(--mat-sys-primary) !important;
     }
 
     .label-text {
-      color: var(--mat-sys-on-primary) !important;
+      color: var(--mat-sys-primary) !important;
       font-weight: 600;
     }
 
     &:hover {
-      background: var(--mat-sys-primary-light-hover) !important;
+      background: var(--mat-sys-on-primary-light-hover) !important;
     }
   }
 
@@ -74,14 +74,13 @@
     color: rgba(255, 255, 255, 0.87);
 
     .mat-icon {
-      color: rgba(255, 255, 255, 0.6) !important;
+      color: rgba(255, 255, 255, 0.87);
     }
 
     .menu-item {
-      color: rgba(255, 255, 255, 0.87);
-
+      color: var(--mat-sys-on-primary) !important;
       &:hover {
-        background-color: rgba(255, 255, 255, 0.04) !important;
+        background: var(--mat-sys-primary-light) !important;
       }
 
       .label-text {
@@ -91,14 +90,13 @@
 
     .selected-menu-item {
       background: var(--mat-sys-primary-dark) !important;
-      color: var(--mat-sys-on-primary-dark) !important;
-
+      color: var(--mat-sys-primary) !important;
       .mat-icon {
-        color: var(--mat-sys-on-primary-dark) !important;
+        color: var(--mat-sys-primary) !important;
       }
 
       .label-text {
-        color: var(--mat-sys-on-primary-dark) !important;
+        color: var(--mat-sys-primary) !important;
       }
 
       &:hover {
