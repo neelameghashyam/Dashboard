@@ -1,0 +1,81 @@
+<div class="container mx-auto p-4">
+    <h1 class="text-2xl mb-4">Todo App</h1>
+    
+    <!-- Add Todo Form -->
+    <form (ngSubmit)="addTodo()" class="mb-4">
+      <input
+        type="text"
+        [(ngModel)]="newTodo"
+        name="newTodo"
+        placeholder="What needs to be done?"
+        class="p-2 border rounded mr-2"
+      />
+      <button 
+        type="submit" 
+        [disabled]="!newTodo.trim() || store.loading()"
+        class="px-4 py-2 bg-blue-500 text-white rounded disabled:bg-gray-400"
+      >
+        Add
+      </button>
+    </form>
+
+    <!-- Loading Indicator -->
+    @if (store.loading()) {
+      <div class="text-blue-500 mb-2">Loading...</div>
+    }
+
+    <!-- Error Message -->
+    @if (store.error()) {
+      <div class="text-red-500 mb-2">{{ store.error() }}</div>
+    }
+
+    <!-- Todo List -->
+    <ul class="space-y-2">
+      @for (todo of store.filteredTodos(); track todo.id) {
+        <li 
+          (click)="store.toggleTodo(todo.id)"
+          class="flex items-center gap-2 p-2 hover:bg-gray-100 cursor-pointer"
+        >
+          <input 
+            type="checkbox" 
+            [checked]="todo.completed"
+            (click)="$event.stopPropagation()"
+            class="h-5 w-5"
+          />
+          <span 
+            [class.line-through]="todo.completed"
+            [class.text-gray-400]="todo.completed"
+          >
+            {{ todo.title }}
+          </span>
+        </li>
+      } @empty {
+        <li class="text-gray-500">No todos found</li>
+      }
+    </ul>
+
+    <!-- Filters -->
+    <div class="mt-4 flex gap-2">
+      <button
+        (click)="store.changeFilter('all')"
+        [class.bg-blue-500]="store.filter() === 'all'"
+        class="px-3 py-1 rounded text-white"
+      >
+        All ({{ store.todos().length }})
+      </button>
+      <button
+        (click)="store.changeFilter('active')"
+        [class.bg-blue-500]="store.filter() === 'active'"
+        class="px-3 py-1 rounded text-white"
+      >
+        Active ({{ store.activeTodos().length }})
+      </button>
+      <button
+        (click)="store.changeFilter('completed')"
+        [class.bg-blue-500]="store.filter() === 'completed'"
+        class="px-3 py-1 rounded text-white"
+      >
+        Completed ({{ store.completedTodos().length }})
+      </button>
+    </div>
+  </div>

@@ -90,7 +90,7 @@
 
 // Enhanced fill appearance with better labels
 .mat-mdc-form-field {
-  @include mat.form-field-density(-5); // Slightly less compact than -4 for better readability
+  @include mat.form-field-density(-5); 
   
   // Label styling
   .mdc-floating-label {

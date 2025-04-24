@@ -3,6 +3,7 @@ import { ContentComponent } from './pages/content/content.component';
 import { AnalyticsComponent } from './pages/analytics/analytics.component';
 import { Dashboard_Component } from './pages/dashboard/dashboard.component'; 
 import { UserFormComponent } from './pages/user-form/user-form.component';
+import { StoreComponent } from './pages/store/store.component';
 
 export const routes: Routes = [
   { 
@@ -24,6 +25,10 @@ export const routes: Routes = [
   { 
     path: 'comments', 
     component: ContentComponent,
+  },
+  { 
+    path: 'store', 
+    component: StoreComponent,
   },
  
   { path: '', redirectTo: 'dashboard', pathMatch: 'full' },

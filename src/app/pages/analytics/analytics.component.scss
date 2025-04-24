@@ -1,152 +1,403 @@
 @use '@angular/material' as mat;
 
-.modern-form {
+.form-container {
   max-width: 800px;
-  padding: 24px;
   margin: 1rem auto;
-  background-color: var(--mat-sys-surface);
-  border-radius: var(--mat-sys-corner-large);
-  box-shadow: var(--mat-sys-level1);
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  color: var(--mat-sys-on-surface);
+  padding: 20px;
+  background-color: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  font-family: 'Roboto', sans-serif;
+  color: rgba(0, 0, 0, 0.87);
 
-  // Responsive adjustments
-  @media (max-width: 600px) {
-    padding: 16px;
-    margin: 0.5rem;
-    border-radius: var(--mat-sys-corner-medium);
-    width: calc(100% - 1rem);
-    gap: 16px;
-  }
+  // Apply density to form fields
+  .mat-mdc-form-field {
+    @include mat.form-field-density(-6);
+
+   // Inside your .form-container
+.mat-mdc-form-field {
+    // Make labels always visible (float above)
+    .mdc-text-field--filled .mdc-floating-label {
+      transform: translateY(-50%) scale(0.75) !important;
+      pointer-events: none;
+      font-size: 14px;
+      color: rgba(0, 0, 0, 0.6);
+      // Keep label always above
+      &.mdc-floating-label--float-above {
+        transform: translateY(-50%) scale(0.75) !important;
+      }
+    }
+  
+    // Adjust the label position
+    .mdc-text-field--filled .mdc-floating-label--float-above {
+      top: 28px;
+    }
+  
+    // Show placeholder text always
+    .mat-mdc-input-element::placeholder {
+      opacity: 1 !important;
+      visibility: visible !important;
+    }
+  
+    // Dark mode adjustments
+    &.dark-mode {
+      .mdc-text-field--filled .mdc-floating-label {
+        color: rgba(255, 255, 255, 0.6) !important;
+      }
+  
+      .mat-mdc-input-element::placeholder {
+        color: rgba(255, 255, 255, 0.6) !important;
+      }
+    }
+  }}
 
   &.dark-mode {
-    background-color: var(--mat-sys-surface-container-dark);
-    box-shadow: var(--mat-sys-primary);
-    color: var(--mat-sys-on-surface);
+    background-color: #121212;
+    color: white;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 
-    // Dark mode specific styles remain unchanged
-    // ... [keep all your existing dark mode styles]
-  }
-
-  // Improved form field responsiveness
-  .mat-mdc-form-field {
-    width: 100%;
-
-    @media (max-width: 600px) {
-      margin-bottom: 8px;
-    }
-
-    .mdc-text-field--filled:not(.mdc-text-field--disabled) {
-      @media (max-width: 600px) {
-        height: 56px; // Better touch target on mobile
+    // Form fields in dark mode
+    .mat-mdc-form-field {
+      .mdc-text-field--filled:not(.mdc-text-field--disabled) {
+        background-color: #1e1e1e;
+        
+        &:hover, 
+        &.mdc-text-field--focused {
+          background-color: #252525;
+        }
       }
-    }
-
-    .mat-mdc-input-element {
-      @media (max-width: 600px) {
-        font-size: var(--mat-sys-body-medium); // Slightly smaller on mobile
-      }
-    }
-  }
-
-  // Enhanced stepper responsiveness
-  .mat-stepper-horizontal {
-    @media (max-width: 600px) {
-      display: flex;
-      flex-direction: column;
       
-      .mat-stepper-horizontal-line {
-        display: none;
+      // Dark mode labels
+      .mdc-floating-label {
+        color: rgba(60, 60, 60, 0.6);
       }
+
+      .mdc-text-field--filled:not(.mdc-text-field--disabled):hover .mdc-floating-label {
+        color: rgba(51, 50, 50, 0.87);
+      }
+
+      .mdc-text-field--focused .mdc-floating-label {
+        color: var(--mat-primary);
+      }
+      
+      .mat-mdc-input-element,
+      .mdc-floating-label--float-above {
+        color: black;
+      }
+      
+      .mdc-line-ripple::before {
+        border-bottom-color: var(--mat-primary);
+      }
+      
+      .mat-mdc-form-field-error {
+        color: #f44336;
+      }
+    }
+
+    h3 {
+        color: #b0b0b0; // Lighter color for better visibility in dark mode
+      }
+      
+      .mat-selection-list {
+        .mat-list-option {
+          color: white !important; // Force white text
+          
+          .mdc-list-item__primary-text {
+            color: white !important; // Ensure text is white
+          }
+          
+          // Checkbox styling in dark mode
+          .mdc-checkbox {
+            .mdc-checkbox__background {
+              border-color: rgba(255, 255, 255, 0.54) !important;
+            }
+          }
+        }
+      }
+      
+      mat-error {
+        color: #f44336 !important;
+      }
+    
+
+    // Success message
+    .success-message {
+      background-color: #1e3a8a;
+      color: white;
+      
+      mat-icon {
+        color: white;
+      }
+    }
+
+    // Stepper styling
+    mat-horizontal-stepper {
+      background: transparent;
       
       .mat-step-header {
-        padding: 12px 8px;
-        flex-direction: column;
-        align-items: flex-start;
-        height: auto;
-        
         .mat-step-label {
-          margin-top: 8px;
-          text-align: left;
-          white-space: normal;
+          color: white;
         }
         
         .mat-step-icon {
-          margin-right: 0;
+          background-color: #3f51b5;
+          color: white;
         }
+        
+        &.cdk-keyboard-focused,
+        &:hover {
+          background-color: rgba(63, 81, 181, 0.12);
+        }
+      }
+      
+      .mat-stepper-horizontal-line {
+        border-top-color: #444;
+      }
+    }
+
+    // Step content
+    mat-step {
+      h2 {
+        color: white;
+      }
+      
+      .step-subtitle {
+        color: #b0b0b0;
+      }
+    }
+
+    // Select panel
+    .mat-mdc-select-panel {
+      background-color: #1e1e1e;
+      color: white;
+      
+      .mat-mdc-option {
+        &:hover:not(.mdc-list-item--disabled),
+        &.mdc-list-item--selected:not(.mdc-list-item--disabled) {
+          background-color: rgba(255, 255, 255, 0.08);
+        }
+        
+        &.mdc-list-item--selected:not(.mdc-list-item--disabled) .mdc-list-item__primary-text {
+          color: var(--mat-primary);
+        }
+      }
+    }
+
+    // Datepicker
+    .mat-datepicker-content {
+      background-color: #1e1e1e;
+      color: white;
+      
+      .mat-calendar-body-cell-content {
+        color: white;
+      }
+      
+      .mat-calendar-body-selected {
+        background-color: #3f51b5;
+        color: white;
+      }
+    }
+      
+    // Radio buttons
+    .age-group-section {
+      h3 {
+        color: #706d6d;
+      }
+    }
+    .age-group-section {
+        .mat-selection-list {
+          .mat-list-option {
+           
+            color: white !important;
+            
+            .mdc-checkbox {
+              .mdc-checkbox__background {
+                border-color: rgba(242, 242, 242, 0.54) !important;
+              }
+            }
+          }
+        }
+      }
+  }
+
+  // Success message
+  .success-message {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 16px;
+    margin-bottom: 24px;
+    background-color: #e3f2fd;
+    color: #0d47a1;
+    border-radius: 8px;
+    font-size: 14px;
+    
+    mat-icon {
+      color: #0d47a1;
+    }
+  }
+
+  // Stepper
+  mat-horizontal-stepper {
+    background: transparent;
+    
+    .mat-step-header {
+      .mat-step-label {
+        font-weight: 500;
+        color: rgba(0, 0, 0, 0.87);
+      }
+      
+      .mat-step-icon {
+        background-color: #3f51b5;
+        color: white;
       }
     }
   }
 
-  // Grid adjustments
-  .grid-2 {
+  // Step content
+  mat-step {
+    h2 {
+      font-size: 22px;
+      font-weight: 500;
+      margin-bottom: 8px;
+    }
+    
+    .step-subtitle {
+      font-size: 14px;
+      color: rgba(0, 0, 0, 0.6);
+      margin-bottom: 24px;
+    }
+  }
+
+  // Form grid
+  .form-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(2, 1fr);
     gap: 16px;
     
     @media (max-width: 600px) {
       grid-template-columns: 1fr;
-      gap: 12px;
     }
   }
 
-  // Submit button container
-  .submit-container {
-    margin-top: 24px;
-    display: flex;
-    justify-content: flex-end;
-    gap: 12px;
+  // Age Group Section (checkbox list)
+  .age-group-section {
+    grid-column: 1 / -1;
+    margin-bottom: 16px;
     
-    @media (max-width: 600px) {
-      flex-direction: column-reverse; // Primary button on bottom
-      gap: 8px;
-      margin-top: 16px;
+    h3 {
+      font-weight: 500;
+      margin-bottom: 12px;
+      color: rgba(0, 0, 0, 0.87);
+    }
+    
+    .mat-selection-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      padding: 0;
       
-      button[mat-raised-button] {
-        width: 100%;
-        height: 48px; // Larger touch target
+      .mat-list-option {
+        display: inline-block;
+        width: auto;
+        height: auto;
+        padding: 8px 16px;
+        border-radius: 16px;
+        background-color: #f5f5f5;
+        margin: 0;
+        
+        .mdc-list-item__primary-text {
+          display: flex;
+          align-items: center;
+        }
+
+        // Checkbox styling
+        .mdc-checkbox {
+          margin-right: 8px;
+        }
       }
     }
+    
+    mat-error {
+      margin-top: 8px;
+      font-size: 12px;
+      color: #f44336;
+    }
+  }
 
-    button[mat-raised-button] {
-      padding: 0 24px;
-      height: 44px;
+  
+
+  // Buttons
+  .stepper-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    
+    button {
       min-width: 120px;
-      font: var(--mat-sys-label-large);
-      font-weight: var(--mat-sys-label-large-weight-prominent);
-      border-radius: var(--mat-sys-corner-full);
-      transition: all 0.2s ease;
+      font-weight: 500;
+      letter-spacing: 0.5px;
       
-      @media (max-width: 600px) {
-        padding: 0 16px;
-        height: 48px;
+      &[color="primary"] {
+        &:hover {
+          transform: translateY(-1px);
+        }
       }
     }
   }
-}
 
-// Additional mobile-specific optimizations
-@media (max-width: 600px) {
-  .mat-step-text-label {
-    font-size: var(--mat-sys-body-medium) !important;
+  // Review section
+  .review-container {
+    .review-section {
+      margin-bottom: 24px;
+      
+      h3 {
+        font-size: 18px;
+        color: #3f51b5;
+        margin-bottom: 12px;
+        padding-bottom: 4px;
+        border-bottom: 1px solid #e0e0e0;
+      }
+      
+      .review-item {
+        font-size: 14px;
+        margin-bottom: 8px;
+        color: rgba(0, 0, 0, 0.87);
+        
+        strong {
+          font-weight: 500;
+          color: rgba(0, 0, 0, 0.6);
+        }
+      }
+    }
   }
-  
-  .mat-stepper-label-position-bottom .mat-step-label {
-    padding: 12px 0;
-  }
-  
-  .mat-step-icon {
-    margin-bottom: 4px;
-  }
-}
 
-// Better error message display on mobile
-.mat-mdc-form-field-subscript-wrapper {
+  // Mobile
   @media (max-width: 600px) {
-    position: static !important; // Makes error messages flow naturally
-    height: auto !important;
-    margin-top: 4px;
+    padding: 16px;
+    margin: 1rem;
+    border-radius: 12px;
+    
+    .stepper-actions {
+      flex-direction: column-reverse;
+      gap: 8px;
+      
+      button {
+        width: 100%;
+      }
+    }
+
+    // Adjust age group checkboxes for mobile
+    .age-group-section {
+      .mat-selection-list {
+        flex-direction: column;
+        gap: 8px;
+        
+        .mat-list-option {
+          width: 100%;
+        }
+      }
+    }
   }
 }
