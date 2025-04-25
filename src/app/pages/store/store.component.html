@@ -1,81 +1,113 @@
-<div class="container mx-auto p-4">
-    <h1 class="text-2xl mb-4">Todo App</h1>
-    
-    <!-- Add Todo Form -->
-    <form (ngSubmit)="addTodo()" class="mb-4">
+<main class="task-manager-container" [class.dark-mode]="darkModeService.darkMode()">
+  <div class="task-manager-card">
+    <!-- Header -->
+    <div class="task-manager-header">
+      <h1>Task Manager</h1>
+      <span class="task-counter">
+        {{ store.completedTodos().length }} / {{ store.todos().length }} completed
+      </span>
+    </div>
+
+    <!-- Search -->
+    <div class="search-container">
+      <div class="search-input-wrapper">
+        <div class="search-icon">
+          <svg class="search-svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+        </div>
+        <input 
+          name="searchTodos" 
+          [(ngModel)]="searchTerm" 
+          class="search-input" 
+          placeholder="Search todos.." 
+          (ngModelChange)="store.updateSearchTerm($event)"
+        >
+      </div>
+    </div>
+
+    <!-- Add Task Form -->
+    <form (ngSubmit)="submitNewTodo()" class="add-task-form">
       <input
-        type="text"
-        [(ngModel)]="newTodo"
-        name="newTodo"
-        placeholder="What needs to be done?"
-        class="p-2 border rounded mr-2"
+        name="newTodoInput"
+        [(ngModel)]="newTodoTitle"
+        class="task-input"
+        placeholder="Add a new task..."
+        required
       />
       <button 
-        type="submit" 
-        [disabled]="!newTodo.trim() || store.loading()"
-        class="px-4 py-2 bg-blue-500 text-white rounded disabled:bg-gray-400"
+        type="submit"
+        class="add-button"
       >
         Add
       </button>
     </form>
 
-    <!-- Loading Indicator -->
-    @if (store.loading()) {
-      <div class="text-blue-500 mb-2">Loading...</div>
+    @if (store.todosLoading()) {
+      <div class="loading-indicator">Loading tasks...</div>
+    }
+    @else if (store.todosLoadingError()) {
+      <div class="error-message">Error loading tasks. Showing local data.</div>
     }
 
-    <!-- Error Message -->
-    @if (store.error()) {
-      <div class="text-red-500 mb-2">{{ store.error() }}</div>
-    }
-
-    <!-- Todo List -->
-    <ul class="space-y-2">
-      @for (todo of store.filteredTodos(); track todo.id) {
-        <li 
-          (click)="store.toggleTodo(todo.id)"
-          class="flex items-center gap-2 p-2 hover:bg-gray-100 cursor-pointer"
-        >
-          <input 
-            type="checkbox" 
-            [checked]="todo.completed"
-            (click)="$event.stopPropagation()"
-            class="h-5 w-5"
-          />
-          <span 
-            [class.line-through]="todo.completed"
-            [class.text-gray-400]="todo.completed"
-          >
-            {{ todo.title }}
-          </span>
-        </li>
-      } @empty {
-        <li class="text-gray-500">No todos found</li>
-      }
-    </ul>
-
-    <!-- Filters -->
-    <div class="mt-4 flex gap-2">
+     <!-- Filters -->
+     <div class="filter-buttons">
       <button
+        [class.active-filter]="store.filter() === 'all'"
         (click)="store.changeFilter('all')"
-        [class.bg-blue-500]="store.filter() === 'all'"
-        class="px-3 py-1 rounded text-white"
+        class="filter-button"
       >
-        All ({{ store.todos().length }})
+        All
       </button>
       <button
+        [class.active-filter]="store.filter() === 'active'"
         (click)="store.changeFilter('active')"
-        [class.bg-blue-500]="store.filter() === 'active'"
-        class="px-3 py-1 rounded text-white"
+        class="filter-button"
       >
-        Active ({{ store.activeTodos().length }})
+        Active
       </button>
       <button
+        [class.active-filter]="store.filter() === 'completed'"
         (click)="store.changeFilter('completed')"
-        [class.bg-blue-500]="store.filter() === 'completed'"
-        class="px-3 py-1 rounded text-white"
+        class="filter-button"
       >
-        Completed ({{ store.completedTodos().length }})
+        Completed
       </button>
     </div>
+    
+    <!-- Task List -->
+    <div class="task-list-container">
+      <ul class="task-list">
+        @for (task of store.filteredTodos(); track task.id) {
+          <li
+            (click)="store.toggleTodo(task.id)"
+            class="task-item"
+          >
+            <div class="task-content">
+              <div class="task-checkbox">
+                <input 
+                  type="checkbox" 
+                  [checked]="task.completed" 
+                  (click)="$event.stopPropagation()"
+                  (change)="store.toggleTodo(task.id)"
+                  class="checkbox-input"
+                />
+              </div>
+              <span 
+                [ngClass]="{ 'completed-task': task.completed }"
+                class="task-title"
+              >
+                {{ task.title }}
+              </span>
+            </div>
+          </li>
+        }
+        @empty {
+          <div class="empty-state">
+            No tasks found. Add one above!
+          </div>
+        }
+      </ul>
+    </div>
   </div>
+</main>

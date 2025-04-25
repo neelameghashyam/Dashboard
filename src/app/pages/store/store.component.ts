@@ -1,27 +1,29 @@
-import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { Component, effect, inject, signal } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { TodoStore } from './ngx-store/todos.store';
+import { TodoStore } from './ng/todos.store';
+import { FormsModule } from '@angular/forms';
+import { DarkModeService } from 'src/app/services/dark-theme/dark-mode.service';
 
 @Component({
   selector: 'app-store',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule],
+  imports: [FormsModule, CommonModule, RouterModule],
   templateUrl: './store.component.html',
-  styleUrls: ['./store.component.scss']
+  styleUrl: './store.component.scss'
 })
 export class StoreComponent {
+  newTodoTitle = '';
+  searchTerm = '';
   store = inject(TodoStore);
-  newTodo = '';
 
-  addTodo() {
-    const title = this.newTodo.trim();
-    if (title) {
-      this.store.addTodo(title).subscribe({
-        next: () => this.newTodo = '',
-        error: () => this.newTodo = '' // Reset even on error
-      });
+  constructor(
+    public darkModeService: DarkModeService  ){}
+
+  submitNewTodo() {
+    if (this.newTodoTitle.trim()) {
+      this.store.addTodo(this.newTodoTitle);
+      this.newTodoTitle = '';
     }
   }
 }
