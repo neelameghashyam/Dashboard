@@ -1,5 +1,6 @@
 export type TodoItem = {
-    id: string;
+    id?: string;
     title: string;
     completed: boolean;
-  };
+    userId?: number;
+    };

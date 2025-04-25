@@ -103,11 +103,16 @@ export const TodoStore = signalStore(
         .post<TodoItem>('https://jsonplaceholder.typicode.com/users/1/todos', {
           title: newTodoTitle,
           completed: false,
+          
         })
         .subscribe((todo) => {
+          console.log(newTodoTitle)
           store._todoResource.update((todos) => {
             if (!todos) {
-              return [todo, ...todos];            }
+              return [todo];            
+            }
+            console.log(newTodoTitle)
+
             return [todo, ...todos];
           });
         });

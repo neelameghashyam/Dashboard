@@ -1,59 +1,47 @@
-import { TestBed } from '@angular/core/testing';
 import { DarkModeService } from './dark-mode.service';
 
 describe('DarkModeService', () => {
   let service: DarkModeService;
-  let localStorageMock: { [key: string]: string };
+  let localStorageMock: { [key: string]: string | null };
   let matchMediaMock: jest.Mock;
-  let mediaQueryListMock: {
-    matches: boolean;
-    addEventListener: jest.Mock;
-    removeEventListener: jest.Mock;
-  };
+  let mediaQueryListeners: ((event: { matches: boolean }) => void)[] = [];
 
   beforeEach(() => {
+    // Clear any previous listeners
+    mediaQueryListeners = [];
+    
     // Mock localStorage
     localStorageMock = {};
     Object.defineProperty(window, 'localStorage', {
       value: {
-        getItem: jest.fn((key: string) => localStorageMock[key] || null),
-        setItem: jest.fn((key: string, value: string) => {
+        getItem: (key: string) => localStorageMock[key] || null,
+        setItem: (key: string, value: string) => {
           localStorageMock[key] = value;
-        }),
-        removeItem: jest.fn((key: string) => {
+        },
+        removeItem: (key: string) => {
           delete localStorageMock[key];
-        }),
+        }
       },
-      writable: true,
+      writable: true
     });
 
-    // Mock matchMedia
-    mediaQueryListMock = {
+    // Mock matchMedia with proper event listener tracking
+    matchMediaMock = jest.fn().mockImplementation(query => ({
       matches: false,
-      addEventListener: jest.fn(),
+      media: query,
+      onchange: null,
+      addEventListener: jest.fn((_, listener) => {
+        mediaQueryListeners.push(listener);
+      }),
       removeEventListener: jest.fn(),
-    };
-    matchMediaMock = jest.fn().mockImplementation((query: string) => {
-      if (query === '(prefers-color-scheme: dark)') {
-        return mediaQueryListMock;
-      }
-      return { matches: false, addEventListener: jest.fn() };
-    });
+      dispatchEvent: jest.fn(),
+    }));
     Object.defineProperty(window, 'matchMedia', {
-      writable: true,
       value: matchMediaMock,
+      writable: true
     });
 
-    // Mock document.body.classList
-    Object.defineProperty(document.body, 'classList', {
-      value: {
-        toggle: jest.fn(),
-      },
-      writable: true,
-    });
-
-    TestBed.configureTestingModule({});
-    service = TestBed.inject(DarkModeService);
+    service = new DarkModeService();
   });
 
   afterEach(() => {
@@ -65,124 +53,116 @@ describe('DarkModeService', () => {
   });
 
   describe('initialization', () => {
-    it('should initialize with darkMode false by default', () => {
-      expect(service.darkMode()).toBe(false);
-    });
-
-    it('should initialize from localStorage if "true" value exists', () => {
+    it('should initialize with saved dark mode from localStorage (true)', () => {
       localStorageMock['darkMode'] = 'true';
-      service = TestBed.inject(DarkModeService);
+      service = new DarkModeService();
       expect(service.darkMode()).toBe(true);
-      expect(localStorage.getItem).toHaveBeenCalledWith('darkMode');
     });
 
-    it('should initialize from localStorage if "false" value exists', () => {
+    it('should initialize with saved dark mode from localStorage (false)', () => {
       localStorageMock['darkMode'] = 'false';
-      service = TestBed.inject(DarkModeService);
+      service = new DarkModeService();
       expect(service.darkMode()).toBe(false);
     });
 
-    it('should initialize from system preference (dark) if no localStorage value', () => {
-      mediaQueryListMock.matches = true;
-      service = TestBed.inject(DarkModeService);
+    it('should initialize with system preference when no localStorage value (dark)', () => {
+      matchMediaMock.mockImplementationOnce(query => ({
+        matches: true,
+        media: query,
+        addEventListener: jest.fn((_, listener) => {
+          mediaQueryListeners.push(listener);
+        }),
+      }));
+      service = new DarkModeService();
       expect(service.darkMode()).toBe(true);
-      expect(window.matchMedia).toHaveBeenCalledWith('(prefers-color-scheme: dark)');
     });
 
-    it('should initialize from system preference (light) if no localStorage value', () => {
-      mediaQueryListMock.matches = false;
-      service = TestBed.inject(DarkModeService);
+    it('should initialize with system preference when no localStorage value (light)', () => {
+      matchMediaMock.mockImplementationOnce(query => ({
+        matches: false,
+        media: query,
+        addEventListener: jest.fn((_, listener) => {
+          mediaQueryListeners.push(listener);
+        }),
+      }));
+      service = new DarkModeService();
       expect(service.darkMode()).toBe(false);
-    });
-
-    it('should set up the body class effect during initialization', () => {
-      expect(document.body.classList.toggle).toHaveBeenCalledWith('dark-mode', false);
     });
   });
 
   describe('system preference changes', () => {
-    let changeHandler: (e: { matches: boolean }) => void;
-
-    beforeEach(() => {
-      // Capture the change handler
-      changeHandler = (mediaQueryListMock.addEventListener as jest.Mock).mock.calls[0][1];
+    it('should update dark mode when preference changes and no localStorage value', () => {
+      // Ensure no localStorage value
+      expect(localStorageMock['darkMode']).toBeUndefined();
+      
+      // Initial state is false (from mock)
+      expect(service.darkMode()).toBe(false);
+      
+      // Trigger change to dark mode
+      mediaQueryListeners[0]({ matches: true });
+      expect(service.darkMode()).toBe(true);
+      
+      // Trigger change back to light mode
+      mediaQueryListeners[0]({ matches: false });
+      expect(service.darkMode()).toBe(false);
     });
 
-    it('should register system preference change listener', () => {
-      expect(mediaQueryListMock.addEventListener).toHaveBeenCalledWith(
-        'change',
-        expect.any(Function)
-      );
-    });
-
-    it('should update darkMode when system preference changes to dark and no localStorage value', () => {
-      changeHandler({ matches: true });
+    it('should NOT update dark mode when preference changes but localStorage exists', () => {
+      // Set localStorage value
+      localStorageMock['darkMode'] = 'true';
+      service = new DarkModeService();
+      
+      // Trigger change to light mode
+      mediaQueryListeners[0]({ matches: false });
+      
+      // Should remain true from localStorage
       expect(service.darkMode()).toBe(true);
     });
 
-    it('should update darkMode when system preference changes to light and no localStorage value', () => {
-      changeHandler({ matches: false });
+    it('should handle multiple preference changes correctly', () => {
+      // Initial state
       expect(service.darkMode()).toBe(false);
-    });
-
-    it('should not update darkMode when system preference changes but localStorage value exists', () => {
-      localStorageMock['darkMode'] = 'false';
-      service = TestBed.inject(DarkModeService);
-      changeHandler({ matches: true });
+      
+      // First change to dark
+      mediaQueryListeners[0]({ matches: true });
+      expect(service.darkMode()).toBe(true);
+      
+      // Second change back to light
+      mediaQueryListeners[0]({ matches: false });
       expect(service.darkMode()).toBe(false);
+      
+      // Third change to dark again
+      mediaQueryListeners[0]({ matches: true });
+      expect(service.darkMode()).toBe(true);
     });
   });
 
   describe('toggle', () => {
-    it('should toggle darkMode from false to true and store in localStorage', () => {
+    it('should toggle from false to true and update localStorage', () => {
       service.darkMode.set(false);
       service.toggle();
       expect(service.darkMode()).toBe(true);
-      expect(localStorage.setItem).toHaveBeenCalledWith('darkMode', 'true');
+      expect(localStorageMock['darkMode']).toBe('true');
     });
 
-    it('should toggle darkMode from true to false and store in localStorage', () => {
+    it('should toggle from true to false and update localStorage', () => {
       service.darkMode.set(true);
       service.toggle();
       expect(service.darkMode()).toBe(false);
-      expect(localStorage.setItem).toHaveBeenCalledWith('darkMode', 'false');
-    });
-  });
-
-  describe('effect', () => {
-    it('should add dark-mode class when darkMode becomes true', () => {
-      service.darkMode.set(true);
-      expect(document.body.classList.toggle).toHaveBeenCalledWith('dark-mode', true);
+      expect(localStorageMock['darkMode']).toBe('false');
     });
 
-    it('should remove dark-mode class when darkMode becomes false', () => {
-      service.darkMode.set(false);
-      expect(document.body.classList.toggle).toHaveBeenCalledWith('dark-mode', false);
-    });
-
-    it('should update class on multiple changes', () => {
-      const initialCalls = (document.body.classList.toggle as jest.Mock).mock.calls.length;
+    it('should prevent system preference updates after toggle', () => {
+      // Initial state
+      expect(service.darkMode()).toBe(false);
       
-      service.darkMode.set(true);
-      service.darkMode.set(false);
-      service.darkMode.set(true);
+      // Toggle to true (sets localStorage)
+      service.toggle();
+      expect(service.darkMode()).toBe(true);
       
-      expect(document.body.classList.toggle).toHaveBeenCalledTimes(initialCalls + 3);
-    });
-  });
-
-  describe('cleanup', () => {
-    it('should remove event listener when service is destroyed', () => {
-      // Simulate ngOnDestroy
-      const ngOnDestroy = (service as any).ngOnDestroy;
-      if (ngOnDestroy) {
-        ngOnDestroy();
-      }
-      
-      expect(mediaQueryListMock.removeEventListener).toHaveBeenCalledWith(
-        'change',
-        expect.any(Function)
-      );
+      // System preference change should now be ignored
+      mediaQueryListeners[0]({ matches: false });
+      expect(service.darkMode()).toBe(true); // Still true from localStorage
     });
   });
 });

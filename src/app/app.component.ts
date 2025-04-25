@@ -29,7 +29,7 @@ import { CustomSidenavComponent } from './components/custom-sidenav/custom-siden
         MatBadgeModule,
         MatTooltipModule,
         UserComponent,
-        CustomSidenavComponent, // Make sure this is included
+        CustomSidenavComponent, 
         TranslocoRootModule
     ],
     templateUrl: './app.component.html',

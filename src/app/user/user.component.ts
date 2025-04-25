@@ -23,7 +23,7 @@ export class UserComponent {
 [x: string]: any;
   showAvatar = true;
   user = {
-    avatar: '/assets/image.png',
+    avatar: 'assets/image.png',
     status: 'online' as 'online' | 'away' | 'busy' | 'not-visible'
   };
 

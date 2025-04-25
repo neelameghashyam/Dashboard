@@ -1,18 +1,17 @@
-// responsive.service.ts
-import { Injectable, computed, signal } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ResponsiveService {
-  private breakpointState = signal({
-    isXSmall: false,    // < 600px (mobile)
-    isSmall: false,     // 600-959px (tablet portrait)
-    isMedium: false,    // 960-1279px (tablet landscape)
-    isLarge: false,     // 1280-1919px (desktop)
-    isXLarge: false     // >= 1920px (large desktop)
-  });
+  private breakpointState = {
+    isXSmall: false,
+    isSmall: false,
+    isMedium: false,
+    isLarge: false,
+    isXLarge: false
+  };
 
   constructor(private breakpointObserver: BreakpointObserver) {
     this.breakpointObserver.observe([
@@ -22,28 +21,33 @@ export class ResponsiveService {
       Breakpoints.Large,
       Breakpoints.XLarge
     ]).subscribe(result => {
-      this.breakpointState.set({
+      this.breakpointState = {
         isXSmall: result.breakpoints[Breakpoints.XSmall],
         isSmall: result.breakpoints[Breakpoints.Small],
         isMedium: result.breakpoints[Breakpoints.Medium],
         isLarge: result.breakpoints[Breakpoints.Large],
         isXLarge: result.breakpoints[Breakpoints.XLarge]
-      });
+      };
     });
   }
 
-  // Simplified device type signals
-  isMobile = computed(() => this.breakpointState().isXSmall);
-  isTablet = computed(() => this.breakpointState().isSmall || this.breakpointState().isMedium);
-  isDesktop = computed(() => this.breakpointState().isLarge || this.breakpointState().isXLarge);
+  isMobile(): boolean {
+    return this.breakpointState.isXSmall;
+  }
 
-  // More granular breakpoints
-  currentBreakpoint = computed(() => {
-    const state = this.breakpointState();
-    if (state.isXSmall) return 'xsmall';
-    if (state.isSmall) return 'small';
-    if (state.isMedium) return 'medium';
-    if (state.isLarge) return 'large';
+  isTablet(): boolean {
+    return this.breakpointState.isSmall || this.breakpointState.isMedium;
+  }
+
+  isDesktop(): boolean {
+    return this.breakpointState.isLarge || this.breakpointState.isXLarge;
+  }
+
+  currentBreakpoint(): string {
+    if (this.breakpointState.isXSmall) return 'xsmall';
+    if (this.breakpointState.isSmall) return 'small';
+    if (this.breakpointState.isMedium) return 'medium';
+    if (this.breakpointState.isLarge) return 'large';
     return 'xlarge';
-  });
+  }
 }

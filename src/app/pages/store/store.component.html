@@ -26,18 +26,19 @@
       </div>
     </div>
 
-    <!-- Add Task Form -->
-    <form (ngSubmit)="submitNewTodo()" class="add-task-form">
+    <form class="add-task-form">
       <input
         name="newTodoInput"
         [(ngModel)]="newTodoTitle"
         class="task-input"
         placeholder="Add a new task..."
-        required
+        (keyup.enter)="submitNewTodo()" 
       />
       <button 
-        type="submit"
+        type="button" 
         class="add-button"
+        [disabled]="!newTodoTitle?.trim()"
+        (click)="submitNewTodo()" 
       >
         Add
       </button>
@@ -109,5 +110,7 @@
         }
       </ul>
     </div>
+
+   
   </div>
 </main>
