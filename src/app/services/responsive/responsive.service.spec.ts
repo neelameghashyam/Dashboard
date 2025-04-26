@@ -1,24 +1,19 @@
 import { TestBed } from '@angular/core/testing';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { ResponsiveService } from './responsive.service';
-import { BreakpointObserver, Breakpoints, BreakpointState } from '@angular/cdk/layout';
 import { of } from 'rxjs';
 
 describe('ResponsiveService', () => {
   let service: ResponsiveService;
-  let breakpointObserver: jest.Mocked<BreakpointObserver>;
+  let breakpointObserver: BreakpointObserver;
+  let mockObserverSubscribe: jest.Mock;
 
   beforeEach(() => {
+    mockObserverSubscribe = jest.fn();
     const breakpointObserverMock = {
-      observe: jest.fn().mockReturnValue(of({
-        matches: false,
-        breakpoints: {
-          [Breakpoints.XSmall]: false,
-          [Breakpoints.Small]: false,
-          [Breakpoints.Medium]: false,
-          [Breakpoints.Large]: false,
-          [Breakpoints.XLarge]: false
-        }
-      } as BreakpointState))
+      observe: jest.fn().mockReturnValue({
+        subscribe: mockObserverSubscribe
+      })
     };
 
     TestBed.configureTestingModule({
@@ -29,149 +24,207 @@ describe('ResponsiveService', () => {
     });
 
     service = TestBed.inject(ResponsiveService);
-    breakpointObserver = TestBed.inject(BreakpointObserver) as jest.Mocked<BreakpointObserver>;
+    breakpointObserver = TestBed.inject(BreakpointObserver);
   });
 
   it('should be created', () => {
     expect(service).toBeTruthy();
   });
 
-  it('should observe all breakpoints', () => {
-    expect(breakpointObserver.observe).toHaveBeenCalledWith([
-      Breakpoints.XSmall,
-      Breakpoints.Small,
-      Breakpoints.Medium,
-      Breakpoints.Large,
-      Breakpoints.XLarge
-    ]);
-  });
+  describe('constructor', () => {
+    it('should initialize breakpointObserver with all breakpoints', () => {
+      expect(breakpointObserver.observe).toHaveBeenCalledWith([
+        Breakpoints.XSmall,
+        Breakpoints.Small,
+        Breakpoints.Medium,
+        Breakpoints.Large,
+        Breakpoints.XLarge
+      ]);
+    });
 
-  describe('initial state', () => {
-    it('should initialize with all breakpoints false', () => {
-      expect(service.isMobile()).toBe(false);
-      expect(service.isTablet()).toBe(false);
-      expect(service.isDesktop()).toBe(false);
-      expect(service.currentBreakpoint()).toBe('xlarge');
+    it('should update breakpointState when breakpointObserver emits', () => {
+      const mockBreakpointState = {
+        breakpoints: {
+          [Breakpoints.XSmall]: true,
+          [Breakpoints.Small]: false,
+          [Breakpoints.Medium]: false,
+          [Breakpoints.Large]: false,
+          [Breakpoints.XLarge]: false
+        }
+      };
+
+      // Simulate the subscription callback
+      const subscribeCallback = mockObserverSubscribe.mock.calls[0][0];
+      subscribeCallback(mockBreakpointState);
+
+      expect(service['breakpointState']).toEqual({
+        isXSmall: true,
+        isSmall: false,
+        isMedium: false,
+        isLarge: false,
+        isXLarge: false
+      });
     });
   });
 
-  describe('breakpoint states', () => {
-    it('should handle XSmall breakpoint (mobile)', () => {
-      breakpointObserver.observe.mockReturnValue(
-        of({
-          matches: true,
-          breakpoints: { [Breakpoints.XSmall]: true }
-        } as BreakpointState)
-      );
-      service = TestBed.inject(ResponsiveService);
+  describe('isMobile', () => {
+    it('should return true when isXSmall is true', () => {
+      service['breakpointState'] = {
+        isXSmall: true,
+        isSmall: false,
+        isMedium: false,
+        isLarge: false,
+        isXLarge: false
+      };
       expect(service.isMobile()).toBe(true);
+    });
+
+    it('should return false when isXSmall is false', () => {
+      service['breakpointState'] = {
+        isXSmall: false,
+        isSmall: false,
+        isMedium: false,
+        isLarge: false,
+        isXLarge: false
+      };
+      expect(service.isMobile()).toBe(false);
+    });
+  });
+
+  describe('isTablet', () => {
+    it('should return true when isSmall is true', () => {
+      service['breakpointState'] = {
+        isXSmall: false,
+        isSmall: true,
+        isMedium: false,
+        isLarge: false,
+        isXLarge: false
+      };
+      expect(service.isTablet()).toBe(true);
+    });
+
+    it('should return true when isMedium is true', () => {
+      service['breakpointState'] = {
+        isXSmall: false,
+        isSmall: false,
+        isMedium: true,
+        isLarge: false,
+        isXLarge: false
+      };
+      expect(service.isTablet()).toBe(true);
+    });
+
+    it('should return false when neither isSmall nor isMedium is true', () => {
+      service['breakpointState'] = {
+        isXSmall: false,
+        isSmall: false,
+        isMedium: false,
+        isLarge: false,
+        isXLarge: false
+      };
+      expect(service.isTablet()).toBe(false);
+    });
+  });
+
+  describe('isDesktop', () => {
+    it('should return true when isLarge is true', () => {
+      service['breakpointState'] = {
+        isXSmall: false,
+        isSmall: false,
+        isMedium: false,
+        isLarge: true,
+        isXLarge: false
+      };
+      expect(service.isDesktop()).toBe(true);
+    });
+
+    it('should return true when isXLarge is true', () => {
+      service['breakpointState'] = {
+        isXSmall: false,
+        isSmall: false,
+        isMedium: false,
+        isLarge: false,
+        isXLarge: true
+      };
+      expect(service.isDesktop()).toBe(true);
+    });
+
+    it('should return false when neither isLarge nor isXLarge is true', () => {
+      service['breakpointState'] = {
+        isXSmall: false,
+        isSmall: false,
+        isMedium: false,
+        isLarge: false,
+        isXLarge: false
+      };
+      expect(service.isDesktop()).toBe(false);
+    });
+  });
+
+  describe('currentBreakpoint', () => {
+    it('should return "xsmall" when isXSmall is true', () => {
+      service['breakpointState'] = {
+        isXSmall: true,
+        isSmall: false,
+        isMedium: false,
+        isLarge: false,
+        isXLarge: false
+      };
       expect(service.currentBreakpoint()).toBe('xsmall');
     });
 
-    it('should handle Small breakpoint (tablet portrait)', () => {
-      breakpointObserver.observe.mockReturnValue(
-        of({
-          matches: true,
-          breakpoints: { [Breakpoints.Small]: true }
-        } as BreakpointState)
-      );
-      service = TestBed.inject(ResponsiveService);
-      expect(service.isTablet()).toBe(true);
+    it('should return "small" when isSmall is true', () => {
+      service['breakpointState'] = {
+        isXSmall: false,
+        isSmall: true,
+        isMedium: false,
+        isLarge: false,
+        isXLarge: false
+      };
       expect(service.currentBreakpoint()).toBe('small');
     });
 
-    it('should handle Medium breakpoint (tablet landscape)', () => {
-      breakpointObserver.observe.mockReturnValue(
-        of({
-          matches: true,
-          breakpoints: { [Breakpoints.Medium]: true }
-        } as BreakpointState)
-      );
-      service = TestBed.inject(ResponsiveService);
-      expect(service.isTablet()).toBe(true);
+    it('should return "medium" when isMedium is true', () => {
+      service['breakpointState'] = {
+        isXSmall: false,
+        isSmall: false,
+        isMedium: true,
+        isLarge: false,
+        isXLarge: false
+      };
       expect(service.currentBreakpoint()).toBe('medium');
     });
 
-    it('should handle Large breakpoint (desktop)', () => {
-      breakpointObserver.observe.mockReturnValue(
-        of({
-          matches: true,
-          breakpoints: { [Breakpoints.Large]: true }
-        } as BreakpointState)
-      );
-      service = TestBed.inject(ResponsiveService);
-      expect(service.isDesktop()).toBe(true);
+    it('should return "large" when isLarge is true', () => {
+      service['breakpointState'] = {
+        isXSmall: false,
+        isSmall: false,
+        isMedium: false,
+        isLarge: true,
+        isXLarge: false
+      };
       expect(service.currentBreakpoint()).toBe('large');
     });
 
-    it('should handle XLarge breakpoint (large desktop)', () => {
-      breakpointObserver.observe.mockReturnValue(
-        of({
-          matches: true,
-          breakpoints: { [Breakpoints.XLarge]: true }
-        } as BreakpointState)
-      );
-      service = TestBed.inject(ResponsiveService);
-      expect(service.isDesktop()).toBe(true);
+    it('should return "xlarge" when isXLarge is true or no other breakpoint is active', () => {
+      service['breakpointState'] = {
+        isXSmall: false,
+        isSmall: false,
+        isMedium: false,
+        isLarge: false,
+        isXLarge: true
+      };
       expect(service.currentBreakpoint()).toBe('xlarge');
-    });
-  });
 
-  describe('computed values', () => {
-    it('should correctly compute isTablet for both tablet sizes', () => {
-      breakpointObserver.observe.mockReturnValue(
-        of({
-          matches: true,
-          breakpoints: { [Breakpoints.Small]: true }
-        } as BreakpointState)
-      );
-      service = TestBed.inject(ResponsiveService);
-      expect(service.isTablet()).toBe(true);
-
-      breakpointObserver.observe.mockReturnValue(
-        of({
-          matches: true,
-          breakpoints: { [Breakpoints.Medium]: true }
-        } as BreakpointState)
-      );
-      service = TestBed.inject(ResponsiveService);
-      expect(service.isTablet()).toBe(true);
-    });
-
-    it('should correctly compute isDesktop for both desktop sizes', () => {
-      breakpointObserver.observe.mockReturnValue(
-        of({
-          matches: true,
-          breakpoints: { [Breakpoints.Large]: true }
-        } as BreakpointState)
-      );
-      service = TestBed.inject(ResponsiveService);
-      expect(service.isDesktop()).toBe(true);
-
-      breakpointObserver.observe.mockReturnValue(
-        of({
-          matches: true,
-          breakpoints: { [Breakpoints.XLarge]: true }
-        } as BreakpointState)
-      );
-      service = TestBed.inject(ResponsiveService);
-      expect(service.isDesktop()).toBe(true);
-    });
-  });
-
-  describe('edge cases', () => {
-    it('should prioritize smallest breakpoint when multiple active', () => {
-      breakpointObserver.observe.mockReturnValue(
-        of({
-          matches: true,
-          breakpoints: {
-            [Breakpoints.XSmall]: true,
-            [Breakpoints.Large]: true
-          }
-        } as BreakpointState)
-      );
-      service = TestBed.inject(ResponsiveService);
-      expect(service.currentBreakpoint()).toBe('xsmall');
+      // Test default case when no breakpoints are active
+      service['breakpointState'] = {
+        isXSmall: false,
+        isSmall: false,
+        isMedium: false,
+        isLarge: false,
+        isXLarge: false
+      };
+      expect(service.currentBreakpoint()).toBe('xlarge');
     });
   });
 });

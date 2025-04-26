@@ -2,7 +2,6 @@ import {
   getState,
   patchState,
   signalStore,
-  watchState,
   withComputed,
   withHooks,
   withMethods,
@@ -12,8 +11,6 @@ import {
 import { TodoItem } from './todos.model';
 import { computed, effect, inject, resource } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { catchError, map, of } from 'rxjs';
-import { rxResource } from '@angular/core/rxjs-interop';
 
 const todoStoreKey = 'ng_cookbook_todos';
 
@@ -21,14 +18,14 @@ type TodoFilter = 'all' | 'active' | 'completed';
 
 type TodoState = {
   filter: TodoFilter;
-  intialized: boolean;
+  initialized: boolean;
   searchTerm: string;
 };
 
 const initialState: TodoState = {
   filter: 'all',
-  intialized: false,
-  searchTerm: ''
+  initialized: false,
+  searchTerm: '',
 };
 
 export const TodoStore = signalStore(
@@ -52,19 +49,20 @@ export const TodoStore = signalStore(
             }
             const todos = (await resp.json()) as TodoItem[];
             patchState(store, {
-              intialized: true,
+              initialized: true,
             });
             return todos.filter((todo) =>
               todo.title.toLowerCase().includes(searchTerm.toLowerCase())
             );
           } catch (error) {
+            console.log('Error fetching todos:', error);
             const todosFromStorage = JSON.parse(
-              localStorage.getItem(todoStoreKey)
+              localStorage.getItem(todoStoreKey) || '[]'
             ) as TodoItem[];
             return todosFromStorage;
           }
-        }
-      })
+        },
+      }),
     };
   }),
   withComputed(({ filter, _todoResource }) => ({
@@ -102,13 +100,14 @@ export const TodoStore = signalStore(
         .post<TodoItem>('https://jsonplaceholder.typicode.com/users/1/todos', {
           title: newTodoTitle,
           completed: false,
-          
         })
         .subscribe((todo) => {
+          console.log(newTodoTitle);
           store._todoResource.update((todos) => {
             if (!todos) {
-              return [todo];            
+              return [todo];
             }
+            console.log(newTodoTitle);
             return [todo, ...todos];
           });
         });
@@ -138,7 +137,7 @@ export const TodoStore = signalStore(
               if (todoItem.id === todoId) {
                 return {
                   ...todoItem,
-                  completed: newCompleted
+                  completed: newCompleted,
                 };
               }
               return todoItem;
@@ -152,7 +151,7 @@ export const TodoStore = signalStore(
       effect(() => {
         const state = getState(store);
         console.log('effect: ', state);
-        if (state.intialized) {
+        if (state.initialized) {
           localStorage.setItem(todoStoreKey, JSON.stringify(store.todos()));
         }
       });
