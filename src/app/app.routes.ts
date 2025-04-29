@@ -4,11 +4,16 @@ import { AnalyticsComponent } from './pages/analytics/analytics.component';
 import { Dashboard_Component } from './pages/dashboard/dashboard.component'; 
 import { UserFormComponent } from './pages/user-form/user-form.component';
 import { StoreComponent } from './pages/store/store.component';
+import { EmployeeComponent } from './pages/Employee/employee/employee.component';
 
 export const routes: Routes = [
   { 
     path: 'dashboard', 
     component: Dashboard_Component,
+  },
+  { 
+    path: 'employee', 
+    component: EmployeeComponent,
   },
   { 
     path: 'content', 
