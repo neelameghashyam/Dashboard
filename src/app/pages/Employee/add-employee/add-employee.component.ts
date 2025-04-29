@@ -13,6 +13,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 import { EmployeeStore } from '../store/employee-store';
 import { inject } from '@angular/core';
+import { DarkModeService } from '../../../services/dark-theme/dark-mode.service'
 
 @Component({
   selector: 'app-add-employee',
@@ -47,7 +48,8 @@ export class AddEmployeeComponent implements OnInit {
   constructor(
     private ref: MatDialogRef<AddEmployeeComponent>,
     private toastr: ToastrService,
-    @Inject(MAT_DIALOG_DATA) public data: { empId: number }
+    @Inject(MAT_DIALOG_DATA) public data: { empId: number },
+    public darkModeService: DarkModeService
   ) {}
 
   async ngOnInit(): Promise<void> {

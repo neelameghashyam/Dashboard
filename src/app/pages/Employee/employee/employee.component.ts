@@ -8,6 +8,7 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { CommonModule } from '@angular/common';
 import { EmployeeStore } from '../store/employee-store';
 import { ToastrService } from 'ngx-toastr';
+import { DarkModeService } from '../../../services/dark-theme/dark-mode.service';
 
 @Component({
   selector: 'app-employee',
@@ -29,7 +30,9 @@ export class EmployeeComponent implements OnInit, OnDestroy {
   displayedColumns: string[] = ['id', 'name', 'role', 'doj', 'salary', 'action'];
   private dialog = inject(MatDialog);
 
-  constructor() {
+  constructor(
+     public darkModeService: DarkModeService
+  ) {
     effect(() => {
       this.dataSource.data = this.store.employees();
       if (this.store.error()) {

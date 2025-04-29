@@ -1,6 +1,114 @@
-.mdc-card{
-    margin: 2%;
+@use '@angular/material' as mat;
+
+// Define custom palette variables for consistency
+$dark-background: #424242;
+$dark-surface: #535353;
+$dark-surface-hover: #616161;
+$dark-border: #616161;
+$dark-text: #e0e0e0;
+$dark-text-secondary: #b0b0b0;
+$dark-primary: var(--mat-sys-primary); // Use Angular Material's primary color
+$dark-primary-dark: var(--mat-sys-primary-dark); // Darker variant for hover
+$dark-accent: #757575;
+
+.mdc-card {
+  margin: 2%;
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+
+  &.dark-mode {
+    background-color: $dark-background;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    color: $dark-text;
+
+    // Style the card header
+    .mat-mdc-card-header {
+      background-color: transparent;
+      padding: 16px;
+
+      .mdc-button {
+        background-color: $dark-primary;
+        color: white;
+        border-radius: 8px;
+        transition: all 0.2s ease;
+
+        &:hover {
+          background-color: $dark-primary-dark;
+        }
+      }
+    }
+
+    // Style the table
+    .mat-mdc-table {
+      background-color: $dark-surface;
+      border-radius: 8px;
+      overflow: hidden;
+
+      .mat-mdc-header-cell {
+        background-color: $dark-background;
+        color: $dark-text;
+        font-weight: 600;
+        border-bottom: 1px solid $dark-border;
+      }
+
+      .mat-mdc-cell {
+        color: $dark-text;
+        border-bottom: 1px solid $dark-border;
+        transition: background-color 0.2s ease;
+
+        &:hover {
+          background-color: $dark-surface-hover;
+        }
+      }
+
+      .mdc-button {
+        margin: 2px;
+        border-radius: 6px;
+        transition: all 0.2s ease;
+
+        &.mat-primary {
+          background-color: $dark-primary;
+          color: white;
+
+          &:hover {
+            background-color: $dark-primary-dark;
+          }
+        }
+
+        &.mat-accent {
+          background-color: $dark-accent;
+          color: $dark-text;
+
+          &:hover {
+            background-color: lighten($dark-accent, 10%);
+          }
+        }
+      }
+    }
+  }
 }
-.mdc-button{
-    margin: 2px;
+
+// Responsive adjustments
+@media (max-width: 600px) {
+  .mdc-card {
+    margin: 1rem;
+    width: calc(100% - 2rem);
+
+    &.dark-mode {
+      .mat-mdc-table {
+        .mat-mdc-header-cell,
+        .mat-mdc-cell {
+          font-size: 12px;
+          padding: 8px;
+        }
+
+        .mdc-button {
+          padding: 6px 12px;
+          font-size: 12px;
+        }
+      }
+    }
+  }
 }
