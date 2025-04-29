@@ -30,7 +30,8 @@ export class CustomSidenavComponent {
     { icon: 'assignment', label: 'Form', route: 'form' },
     { icon: 'analytics', label: 'Analytics', route: 'analytics' },
     { icon: 'comment', label: 'Comments', route: 'comments' },
-    { icon: 'store', label: 'Store', route: 'store' }
+    { icon: 'store', label: 'Store', route: 'store' },
+    { icon: 'group', label: 'Employee', route: 'employee' }
   ]);
 
   sideNavCollapsed = signal(false);
