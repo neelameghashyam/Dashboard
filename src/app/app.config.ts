@@ -17,14 +17,12 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
-    provideAnimationsAsync(),
+    provideAnimations(), // Keep this
     provideHttpClient(),
     provideStore(),
     provideEffects(),
-    provideAnimations(), 
-    provideToastr(), 
+    provideToastr(),
     provideNativeDateAdapter(),
-    provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() })
-],
+    provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() }),
+  ],
 };
-

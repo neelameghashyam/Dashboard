@@ -27,9 +27,7 @@
     "tailwind"
   ],
   "repository": "",
-  "bugs": {
-    "url": ""
-  },
+  "bugs": {},
   "readme": "",
   "scripts": {
     "ng": "ng",

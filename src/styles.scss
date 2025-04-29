@@ -2,11 +2,6 @@
 @use "@angular/material" as mat;
 @import "./app/themes/themes.css";
 
-
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
 html {
   height: 100%;
 }

@@ -5,6 +5,20 @@
       "name": "emp01",
       "doj": "2025-04-29T12:34:05.015Z",
       "role": "manager",
+      "salary": 1000009
+    },
+    {
+      "id": "2",
+      "name": "ram",
+      "doj": "2025-04-29T13:02:54.182Z",
+      "role": "lead",
+      "salary": 2000001
+    },
+    {
+      "id": "3",
+      "name": "somesh",
+      "doj": "2025-04-29T13:49:49.456Z",
+      "role": "lead",
       "salary": 10000000
     }
   ]
