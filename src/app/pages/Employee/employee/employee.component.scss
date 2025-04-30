@@ -41,6 +41,7 @@ $accent-hover: #ffa000;
     display: flex;
     justify-content: flex-end;
     background-color: transparent;
+    align-items: center;
 
     .mdc-button {
       background-color: var(--mat-sys-primary);
@@ -60,6 +61,36 @@ $accent-hover: #ffa000;
 
   .mat-mdc-card-content {
     padding: 0 1.5rem 1.5rem;
+  }
+}
+
+// Search container styles
+.search-container {
+  display: flex;
+  align-items: center;
+  margin-right: auto;
+  width: 100%;
+  max-width: 300px;
+
+  .search-input {
+    width: 100%;
+    padding: 0.5rem 1rem;
+    border: 1px solid $light-border;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    background-color: $light-background;
+    color: $light-text;
+    transition: all 0.2s ease;
+
+    &::placeholder {
+      color: $light-text-secondary;
+    }
+
+    &:focus {
+      outline: none;
+      border-color: $primary;
+      box-shadow: 0 0 0 3px rgba($primary, 0.1);
+    }
   }
 }
 
@@ -185,12 +216,12 @@ $accent-hover: #ffa000;
 
     .mat-mdc-header-cell {
       background-color: $dark-background;
-      color: $dark-text;
+      color: white; // Explicitly set header text to white
       border-bottom: 2px solid $dark-border;
     }
 
     .mat-mdc-cell {
-      color: $dark-text;
+      color: white; // Explicitly set cell text to white
       background-color: $dark-surface;
       border-bottom: 1px solid $dark-border;
 
@@ -205,16 +236,16 @@ $accent-hover: #ffa000;
         color: white;
 
         &:hover {
-          background-color: var(--mat-sys-primary);
+          background-color: $primary-dark;
         }
       }
 
       &.mat-accent {
-        background-color: red($color: #c90d0d);
+        background-color: #c90d0d;
         color: white;
 
         &:hover {
-          background-color: red;
+          background-color: #b00c0c;
         }
       }
     }
@@ -248,11 +279,11 @@ $accent-hover: #ffa000;
 
     .mat-mdc-select {
       color: white;
-      background-color:white;
+      background-color: transparent;
 
       .mat-mdc-option {
         color: white;
-        background-color: white;
+        background-color: $dark-surface;
 
         &:hover {
           background-color: $dark-surface-hover;
@@ -274,8 +305,25 @@ $accent-hover: #ffa000;
         }
 
         .value {
-          color: $dark-text;
+          color: white; // Ensure card view values are white in dark mode
         }
+      }
+    }
+  }
+
+  .search-container {
+    .search-input {
+      background-color: $dark-surface;
+      border-color: $dark-border;
+      color: $dark-text;
+
+      &::placeholder {
+        color: $dark-text-secondary;
+      }
+
+      &:focus {
+        border-color: $primary;
+        box-shadow: 0 0 0 3px rgba($primary, 0.2);
       }
     }
   }
@@ -378,6 +426,8 @@ $accent-hover: #ffa000;
 
     .mat-mdc-card-header {
       padding: 0.5rem 0.75rem;
+      flex-direction: column;
+      align-items: flex-start;
 
       .mdc-button {
         padding: 0.4rem 0.8rem;
@@ -391,6 +441,11 @@ $accent-hover: #ffa000;
 
     .card-view {
       display: flex; // Show card view on mobile
+    }
+
+    .search-container {
+      max-width: 100%;
+      margin-bottom: 0.5rem;
     }
   }
 }

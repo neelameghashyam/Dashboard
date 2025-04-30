@@ -1,5 +1,14 @@
 <mat-card [class.dark-mode]="darkModeService.darkMode()">
   <mat-card-header>
+    <div class="search-container">
+      <input 
+        matInput 
+        placeholder="Search employees..." 
+        [(ngModel)]="searchTerm" 
+        (input)="applyFilter($event)"
+        class="search-input"
+      >
+    </div>
     <button mat-raised-button color="primary" (click)="addemployee()">Add New</button>
   </mat-card-header>
   <mat-card-content>
