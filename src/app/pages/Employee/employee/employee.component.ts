@@ -1,7 +1,8 @@
-import { Component, effect, inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, effect, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { AddEmployeeComponent } from '../add-employee/add-employee.component';
 import { Employee } from '../Employee';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
@@ -18,6 +19,7 @@ import { DarkModeService } from '../../../services/dark-theme/dark-mode.service'
     MatButtonModule,
     MatDialogModule,
     MatTableModule,
+    MatPaginatorModule,
     CommonModule,
   ],
   templateUrl: './employee.component.html',
@@ -29,12 +31,17 @@ export class EmployeeComponent implements OnInit, OnDestroy {
   dataSource = new MatTableDataSource<Employee>([]);
   displayedColumns: string[] = ['id', 'name', 'company', 'bs', 'website', 'action'];
   private dialog = inject(MatDialog);
+  
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  pageSizeOptions: number[] = [5, 10, 25];
+  pageSize = 5;
 
   constructor(
     public darkModeService: DarkModeService
   ) {
     effect(() => {
       this.dataSource.data = this.store.employees();
+      this.dataSource.paginator = this.paginator;
       if (this.store.error()) {
         this.toastr.error(this.store.error());
       }

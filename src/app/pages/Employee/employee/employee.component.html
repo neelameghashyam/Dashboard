@@ -35,9 +35,15 @@
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
       </table>
+      <mat-paginator
+        [pageSizeOptions]="pageSizeOptions"
+        [pageSize]="pageSize"
+        showFirstLastButtons
+        aria-label="Select page of employees">
+      </mat-paginator>
     </div>
     <div class="card-view" [class.dark-mode]="darkModeService.darkMode()">
-      <div *ngFor="let element of dataSource.data" class="employee-card">
+      <div *ngFor="let element of dataSource.filteredData | slice: (paginator?.pageIndex * paginator?.pageSize) : ((paginator?.pageIndex + 1) * paginator?.pageSize)" class="employee-card">
         <div class="employee-field">
           <span class="label">ID</span>
           <span class="value">{{element.id}}</span>
@@ -63,6 +69,12 @@
           <button mat-raised-button color="accent" (click)="DeleteEmployee(element.id)">Delete</button>
         </div>
       </div>
+      <mat-paginator
+        [pageSizeOptions]="pageSizeOptions"
+        [pageSize]="pageSize"
+        showFirstLastButtons
+        aria-label="Select page of employees">
+      </mat-paginator>
     </div>
   </mat-card-content>
 </mat-card>

@@ -43,7 +43,7 @@ $accent-hover: #ffa000;
     background-color: transparent;
 
     .mdc-button {
-      background-color: $primary;
+      background-color: var(--mat-sys-primary);
       color: white;
       border-radius: 8px;
       padding: 0.6rem 1.2rem;
@@ -107,7 +107,7 @@ $accent-hover: #ffa000;
     transition: all 0.2s ease;
 
     &.mat-primary {
-      background-color: $primary;
+      background-color: var(--mat-sys-primary);
       color: white;
 
       &:hover {
@@ -116,7 +116,7 @@ $accent-hover: #ffa000;
     }
 
     &.mat-accent {
-      background-color: $accent;
+      background-color: red;
       color: white;
 
       &:hover {
@@ -126,7 +126,59 @@ $accent-hover: #ffa000;
   }
 }
 
-// ✅ Dark mode globally scoped
+// Paginator styles - Light mode
+.mat-mdc-paginator {
+  background-color: $light-surface;
+  color: $light-text;
+  border-radius: 8px;
+  margin-top: 1rem;
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  .mat-mdc-paginator-page-size-label,
+  .mat-mdc-paginator-range-label {
+    color: $light-text;
+    font-size: 0.9rem;
+  }
+
+  .mat-mdc-paginator-navigation {
+    color: $light-text;
+    border-radius: 4px;
+    padding: 0.5rem;
+    transition: background-color 0.2s ease;
+
+    &:hover {
+      background-color: lighten($light-surface, 5%);
+    }
+
+    &.mat-mdc-paginator-navigation-first,
+    &.mat-mdc-paginator-navigation-previous,
+    &.mat-mdc-paginator-navigation-next,
+    &.mat-mdc-paginator-navigation-last {
+      .mat-icon {
+        color: $light-text;
+      }
+    }
+  }
+
+  .mat-mdc-select {
+    color: $light-text;
+    background-color: transparent;
+
+    .mat-mdc-option {
+      color: $light-text;
+      background-color: $light-surface;
+
+      &:hover {
+        background-color: lighten($light-surface, 5%);
+      }
+    }
+  }
+}
+
+// Dark mode globally scoped
 .dark-mode {
   .mat-mdc-table {
     background-color: $dark-surface;
@@ -149,26 +201,66 @@ $accent-hover: #ffa000;
 
     .mdc-button {
       &.mat-primary {
-        background-color: $primary;
+        background-color: var(--mat-sys-primary);
         color: white;
 
         &:hover {
-          background-color: $primary-dark;
+          background-color: var(--mat-sys-primary);
         }
       }
 
       &.mat-accent {
-        background-color: $accent;
+        background-color: red($color: #c90d0d);
         color: white;
 
         &:hover {
-          background-color: $accent-hover;
+          background-color: red;
         }
       }
     }
   }
 
-  // ✅ Dark mode for mobile card view
+  .mat-mdc-paginator {
+    background-color: $dark-surface;
+    color: white;
+
+    .mat-mdc-paginator-page-size-label,
+    .mat-mdc-paginator-range-label {
+      color: white;
+    }
+
+    .mat-mdc-paginator-navigation {
+      color: white;
+
+      &:hover {
+        background-color: $dark-surface-hover;
+      }
+
+      &.mat-mdc-paginator-navigation-first,
+      &.mat-mdc-paginator-navigation-previous,
+      &.mat-mdc-paginator-navigation-next,
+      &.mat-mdc-paginator-navigation-last {
+        .mat-icon {
+          color: white;
+        }
+      }
+    }
+
+    .mat-mdc-select {
+      color: white;
+      background-color:white;
+
+      .mat-mdc-option {
+        color: white;
+        background-color: white;
+
+        &:hover {
+          background-color: $dark-surface-hover;
+        }
+      }
+    }
+  }
+
   .card-view {
     .employee-card {
       background-color: $dark-surface;
