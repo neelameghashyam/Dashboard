@@ -30,7 +30,6 @@ h2 {
   gap: 16px;
 }
 
-
 mat-form-field {
   @include mat.form-field-density(-5); 
   
@@ -43,7 +42,6 @@ mat-form-field {
     padding: 8px 0;
   }
 
-  /* Enhanced label styles */
   .mat-mdc-floating-label {
     font-size: 14px;
     font-weight: 500;
@@ -62,7 +60,6 @@ mat-card-actions {
   padding-top: 16px;
 }
 
-// Responsive design
 @media (min-width: 600px) {
   .form-grid {
     grid-template-columns: repeat(2, 1fr);
@@ -85,7 +82,6 @@ mat-card-actions {
   }
 }
 
-// Dark mode
 .dark-mode {
   background-color: #424242;
   color: white;
@@ -95,11 +91,8 @@ mat-card-actions {
     background-color: #424242;
     box-shadow: none;
   }
-  mat-datepicker-toggle {
-    color: #424141;
-  }
   
-  mat-label { /* Ensure labels are visible in dark mode */
-    color: var(--mat-sys-on-surface-dark); /* Uses Material's dark theme on-surface color */
+  mat-label {
+    color: var(--mat-sys-on-surface-dark);
   }
 }

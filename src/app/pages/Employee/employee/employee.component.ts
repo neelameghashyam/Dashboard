@@ -27,11 +27,11 @@ export class EmployeeComponent implements OnInit, OnDestroy {
   store = inject(EmployeeStore);
   toastr = inject(ToastrService);
   dataSource = new MatTableDataSource<Employee>([]);
-  displayedColumns: string[] = ['id', 'name', 'role', 'doj', 'salary', 'action'];
+  displayedColumns: string[] = ['id', 'name', 'company', 'bs', 'website', 'action'];
   private dialog = inject(MatDialog);
 
   constructor(
-     public darkModeService: DarkModeService
+    public darkModeService: DarkModeService
   ) {
     effect(() => {
       this.dataSource.data = this.store.employees();

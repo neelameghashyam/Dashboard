@@ -7,30 +7,23 @@
             <div class="form-grid">
                 <mat-form-field floatLabel="auto">
                     <mat-label>Employee Id</mat-label>
-                    <input matInput formControlName="id" type="number">
-                </mat-form-field >
+                    <input matInput formControlName="id" type="number" readonly>
+                </mat-form-field>
                 <mat-form-field floatLabel="auto">
                     <mat-label>Employee Name</mat-label>
-                    <input matInput formControlName="name">
+                    <input matInput formControlName="name" required placeholder="Enter employee name">
                 </mat-form-field>
                 <mat-form-field floatLabel="auto">
-                    <mat-label>Employee Salary</mat-label>
-                    <input matInput formControlName="salary" type="number" placeholder="Salery"> 
+                    <mat-label>Company</mat-label>
+                    <input matInput formControlName="company" required placeholder="Enter company name">
                 </mat-form-field>
                 <mat-form-field floatLabel="auto">
-                    <mat-label>Date of Joining</mat-label>
-                    <input matInput [matDatepicker]="picker" formControlName="doj">
-                    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-                    <mat-datepicker #picker></mat-datepicker>
+                    <mat-label>Business Strategy</mat-label>
+                    <input matInput formControlName="bs" required placeholder="Enter business strategy">
                 </mat-form-field>
                 <mat-form-field floatLabel="auto">
-                    <mat-label>Employee Role</mat-label>
-                    <mat-select formControlName="role">
-                      <mat-option value="">Please select role</mat-option>
-                      <mat-option value="manager">Manager</mat-option>
-                      <mat-option value="lead">Lead</mat-option>
-                      <mat-option value="operator">Operator</mat-option>
-                    </mat-select>
+                    <mat-label>Website</mat-label>
+                    <input matInput formControlName="website" required placeholder="Enter website URL">
                 </mat-form-field>
             </div>
         </mat-card-content>

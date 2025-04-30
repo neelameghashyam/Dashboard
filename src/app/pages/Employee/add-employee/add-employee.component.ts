@@ -4,9 +4,6 @@ import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { MatSelectModule } from '@angular/material/select';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { provideNativeDateAdapter } from '@angular/material/core';
 import { MatIconModule } from '@angular/material/icon';
 import { Employee } from '../Employee';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
@@ -24,11 +21,8 @@ import { DarkModeService } from '../../../services/dark-theme/dark-mode.service'
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
-    MatSelectModule,
-    MatDatepickerModule,
     MatIconModule,
   ],
-  providers: [provideNativeDateAdapter()],
   templateUrl: './add-employee.component.html',
   styleUrl: './add-employee.component.scss',
 })
@@ -38,11 +32,11 @@ export class AddEmployeeComponent implements OnInit {
   isEdit = false;
 
   empForm = new FormGroup({
-    id: new FormControl(0),
+    id: new FormControl({ value: 0, disabled: true }),
     name: new FormControl('', Validators.required),
-    doj: new FormControl(new Date(), Validators.required),
-    role: new FormControl('', Validators.required),
-    salary: new FormControl(0, Validators.required),
+    company: new FormControl('', Validators.required),
+    bs: new FormControl('', Validators.required),
+    website: new FormControl('', Validators.required),
   });
 
   constructor(
@@ -52,45 +46,46 @@ export class AddEmployeeComponent implements OnInit {
     public darkModeService: DarkModeService
   ) {}
 
-  async ngOnInit(): Promise<void> {
+  ngOnInit(): void {
     if (this.data?.empId) {
       this.isEdit = true;
       this.title = 'Edit Employee';
-      try {
-        const employee = await this.store.getEmployee(this.data.empId);
+      const employee = this.store.getEmployee(this.data.empId);
+      if (employee) {
         this.empForm.patchValue({
           id: employee.id,
           name: employee.name,
-          doj: new Date(employee.doj),
-          role: employee.role,
-          salary: employee.salary,
+          company: employee.company,
+          bs: employee.bs,
+          website: employee.website,
         });
-      } catch (error) {
+      } else {
         this.toastr.error('Failed to load employee data');
         this.closepopup();
       }
     }
   }
 
-  async SaveEmployee() {
+  SaveEmployee() {
     if (this.empForm.invalid) {
       this.toastr.error('Please fill all required fields');
       return;
     }
 
-    const employeeData: Employee = this.empForm.value as Employee;
+    const employeeData: Employee = {
+      id: this.isEdit ? this.empForm.getRawValue().id! : Date.now(),
+      name: this.empForm.getRawValue().name!,
+      company: this.empForm.getRawValue().company!,
+      bs: this.empForm.getRawValue().bs!,
+      website: this.empForm.getRawValue().website!,
+    };
+
     try {
       if (this.isEdit) {
-        await this.store.updateEmployee(employeeData);
+        this.store.updateEmployee(employeeData);
         this.toastr.success('Employee updated successfully');
       } else {
-        await this.store.addEmployee({
-          id:employeeData.id,
-          name: employeeData.name,
-          doj: employeeData.doj,
-          role: employeeData.role,
-          salary: employeeData.salary,
-        });
+        this.store.addEmployee(employeeData);
         this.toastr.success('Employee added successfully');
       }
       this.closepopup();
