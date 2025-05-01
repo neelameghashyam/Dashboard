@@ -1,0 +1,451 @@
+@use '@angular/material' as mat;
+
+// Define custom palette
+$light-background: #ffffff;
+$light-surface: #f5f5f5;
+$light-text: #333333;
+$light-text-secondary: #666666;
+$light-border: #e0e0e0;
+
+$dark-background: #4a4a4a;
+$dark-surface: #4a4a4a;
+$dark-surface-hover: #5a5a5a;
+$dark-border: #666666;
+$dark-text: #e0e0e0;
+$dark-text-secondary: #b0b0b0;
+
+$primary: #3f51b5;
+$primary-dark: #303f9f;
+$accent: #ffb300;
+$accent-hover: #ffa000;
+
+// Card styles
+.mdc-card {
+  margin: 2rem auto;
+  background-color: $light-background;
+  border-radius: 16px;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  max-width: 1400px;
+  width: calc(100% - 4rem);
+  padding: 1.5rem;
+
+  &.dark-mode {
+    background-color: $dark-background;
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.4);
+    color: $dark-text;
+  }
+
+  .mat-mdc-card-header {
+    padding: 1rem 1.5rem;
+    display: flex;
+    justify-content: flex-end;
+    background-color: transparent;
+    align-items: center;
+
+    .mdc-button {
+      background-color: var(--mat-sys-primary);
+      color: white;
+      border-radius: 8px;
+      padding: 0.6rem 1.2rem;
+      font-size: 0.95rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      transition: all 0.2s ease;
+
+      &:hover {
+        background-color: $primary-dark;
+      }
+    }
+  }
+
+  .mat-mdc-card-content {
+    padding: 0 1.5rem 1.5rem;
+  }
+}
+
+// Search container styles
+.search-container {
+  display: flex;
+  align-items: center;
+  margin-right: auto;
+  width: 100%;
+  max-width: 300px;
+
+  .search-input {
+    width: 100%;
+    padding: 0.5rem 1rem;
+    border: 1px solid $light-border;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    background-color: $light-background;
+    color: $light-text;
+    transition: all 0.2s ease;
+
+    &::placeholder {
+      color: $light-text-secondary;
+    }
+
+    &:focus {
+      outline: none;
+      border-color: $primary;
+      box-shadow: 0 0 0 3px rgba($primary, 0.1);
+    }
+  }
+}
+
+// Table container
+.table-container {
+  overflow-x: auto;
+  width: 100%;
+}
+
+// Light + default table styles
+.mat-mdc-table {
+  width: 100%;
+  background-color: $light-surface;
+  border-radius: 8px;
+  overflow: hidden;
+
+  .mat-mdc-header-cell {
+    background-color: $light-background;
+    color: $light-text;
+    font-weight: 600;
+    font-size: 0.95rem;
+    padding: 1rem;
+    border-bottom: 2px solid $light-border;
+    text-align: left;
+  }
+
+  .mat-mdc-cell {
+    color: $light-text;
+    font-size: 0.9rem;
+    padding: 1rem;
+    border-bottom: 1px solid $light-border;
+    transition: background-color 0.2s ease;
+
+    &:hover {
+      background-color: lighten($light-surface, 5%);
+    }
+  }
+
+  .mdc-button {
+    margin: 0.3rem;
+    border-radius: 6px;
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+
+    &.mat-primary {
+      background-color: var(--mat-sys-primary);
+      color: white;
+
+      &:hover {
+        background-color: $primary-dark;
+      }
+    }
+
+    &.mat-accent {
+      background-color: red;
+      color: white;
+
+      &:hover {
+        background-color: $accent-hover;
+      }
+    }
+  }
+}
+
+// Paginator styles - Light mode
+.mat-mdc-paginator {
+  background-color: $light-surface;
+  color: $light-text;
+  border-radius: 8px;
+  margin-top: 1rem;
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  .mat-mdc-paginator-page-size-label,
+  .mat-mdc-paginator-range-label {
+    color: $light-text;
+    font-size: 0.9rem;
+  }
+
+  .mat-mdc-paginator-navigation {
+    color: $light-text;
+    border-radius: 4px;
+    padding: 0.5rem;
+    transition: background-color 0.2s ease;
+
+    &:hover {
+      background-color: lighten($light-surface, 5%);
+    }
+
+    &.mat-mdc-paginator-navigation-first,
+    &.mat-mdc-paginator-navigation-previous,
+    &.mat-mdc-paginator-navigation-next,
+    &.mat-mdc-paginator-navigation-last {
+      .mat-icon {
+        color: $light-text;
+      }
+    }
+  }
+
+  .mat-mdc-select {
+    color: $light-text;
+    background-color: transparent;
+
+    .mat-mdc-option {
+      color: $light-text;
+      background-color: $light-surface;
+
+      &:hover {
+        background-color: lighten($light-surface, 5%);
+      }
+    }
+  }
+}
+
+// Dark mode globally scoped
+.dark-mode {
+  .mat-mdc-table {
+    background-color: $dark-surface;
+
+    .mat-mdc-header-cell {
+      background-color: $dark-background;
+      color: white; // Explicitly set header text to white
+      border-bottom: 2px solid $dark-border;
+    }
+
+    .mat-mdc-cell {
+      color: white; // Explicitly set cell text to white
+      background-color: $dark-surface;
+      border-bottom: 1px solid $dark-border;
+
+      &:hover {
+        background-color: $dark-surface-hover;
+      }
+    }
+
+    .mdc-button {
+      &.mat-primary {
+        background-color: var(--mat-sys-primary);
+        color: white;
+
+        &:hover {
+          background-color: $primary-dark;
+        }
+      }
+
+      &.mat-accent {
+        background-color: #c90d0d;
+        color: white;
+
+        &:hover {
+          background-color: #b00c0c;
+        }
+      }
+    }
+  }
+
+  .mat-mdc-paginator {
+    background-color: $dark-surface;
+    color: white;
+
+    .mat-mdc-paginator-page-size-label,
+    .mat-mdc-paginator-range-label {
+      color: white;
+    }
+
+    .mat-mdc-paginator-navigation {
+      color: white;
+
+      &:hover {
+        background-color: $dark-surface-hover;
+      }
+
+      &.mat-mdc-paginator-navigation-first,
+      &.mat-mdc-paginator-navigation-previous,
+      &.mat-mdc-paginator-navigation-next,
+      &.mat-mdc-paginator-navigation-last {
+        .mat-icon {
+          color: white;
+        }
+      }
+    }
+
+    .mat-mdc-select {
+      color: white;
+      background-color: transparent;
+
+      .mat-mdc-option {
+        color: white;
+        background-color: $dark-surface;
+
+        &:hover {
+          background-color: $dark-surface-hover;
+        }
+      }
+    }
+  }
+
+  .card-view {
+    .employee-card {
+      background-color: $dark-surface;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+
+      .employee-field {
+        border-bottom: 1px solid $dark-border;
+
+        .label {
+          color: $dark-text-secondary;
+        }
+
+        .value {
+          color: white; // Ensure card view values are white in dark mode
+        }
+      }
+    }
+  }
+
+  .search-container {
+    .search-input {
+      background-color: $dark-surface;
+      border-color: $dark-border;
+      color: $dark-text;
+
+      &::placeholder {
+        color: $dark-text-secondary;
+      }
+
+      &:focus {
+        border-color: $primary;
+        box-shadow: 0 0 0 3px rgba($primary, 0.2);
+      }
+    }
+  }
+}
+
+// Card view for mobile
+.card-view {
+  display: none;
+  flex-direction: column;
+  gap: 1rem;
+
+  .employee-card {
+    background-color: $light-surface;
+    border-radius: 12px;
+    padding: 1rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease;
+
+    &:hover {
+      transform: translateY(-2px);
+    }
+
+    .employee-field {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.5rem 0;
+      border-bottom: 1px solid $light-border;
+
+      &:last-child {
+        border-bottom: none;
+      }
+
+      .label {
+        font-weight: 600;
+        color: $light-text-secondary;
+      }
+
+      .value {
+        color: $light-text;
+        text-align: right;
+        max-width: 60%;
+        word-break: break-word;
+      }
+    }
+
+    .actions {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 1rem;
+      justify-content: flex-end;
+
+      .mdc-button {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.8rem;
+      }
+    }
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 960px) {
+  .mdc-card {
+    margin: 1.5rem auto;
+    width: calc(100% - 3rem);
+    padding: 1rem;
+
+    .mat-mdc-card-header {
+      padding: 0.75rem 1rem;
+
+      .mdc-button {
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+      }
+    }
+
+    .mat-mdc-table {
+      .mat-mdc-header-cell {
+        font-size: 0.9rem;
+        padding: 0.75rem;
+      }
+
+      .mat-mdc-cell {
+        font-size: 0.85rem;
+        padding: 0.75rem;
+      }
+
+      .mdc-button {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.8rem;
+      }
+    }
+  }
+}
+
+@media (max-width: 600px) {
+  .mdc-card {
+    margin: 1rem auto;
+    width: calc(100% - 2rem);
+    padding: 0.75rem;
+
+    .mat-mdc-card-header {
+      padding: 0.5rem 0.75rem;
+      flex-direction: column;
+      align-items: flex-start;
+
+      .mdc-button {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.85rem;
+      }
+    }
+
+    .table-container {
+      display: none; // Hide table on mobile
+    }
+
+    .card-view {
+      display: flex; // Show card view on mobile
+    }
+
+    .search-container {
+      max-width: 100%;
+      margin-bottom: 0.5rem;
+    }
+  }
+}

@@ -1,0 +1,10 @@
+p {
+    background-color: white;
+    color: black;  
+    padding: 1rem; 
+    border-radius: 4px; 
+    &.dark-mode {
+      background-color: #1e1e1e;
+      color: rgba(255, 255, 255, 0.87);
+    }
+  }

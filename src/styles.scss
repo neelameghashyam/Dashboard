@@ -1,0 +1,23 @@
+
+@use "@angular/material" as mat;
+@import "./app/themes/themes.css";
+
+@import 'ngx-toastr/toastr';
+
+
+/* Ensure Material Icons font is not overridden */
+.material-icons, .material-icons-outlined {
+  font-family: 'Material Icons', 'Material Icons Outlined' !important;
+}
+
+html {
+  height: 100%;
+}
+
+body {
+  height: 100%;
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  background-color: var(--mat-sys-background);
+  color: var(--mat-sys-on-background);
+}

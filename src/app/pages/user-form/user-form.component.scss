@@ -1,0 +1,202 @@
+// user-form.component.scss
+@use '@angular/material' as mat;
+
+.modern-form {
+  max-width: 600px;
+  padding: 32px;
+  margin: 2rem auto;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  // Dark mode styles
+  &.dark-mode {
+    background-color: #424242;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    color: white;
+
+    // Form field styles in dark mode
+    .mat-mdc-form-field {
+      .mdc-floating-label {
+        color: rgba(var(--mat-sys-primary-dark));
+        
+        &--float-above {
+          color: rgba(var(--mat-sys-primary-dark));
+        }
+      }
+
+      .mdc-text-field--filled:not(.mdc-text-field--disabled) {
+        background-color: rgba(var(--mat-sys-primary-dark), 0.95);
+        
+        &:hover {
+          background-color: rgba(var(--mat-sys-primary-dark), 0.95);
+        }
+        
+        &.mdc-text-field--focused {
+          background-color: rgba(var(--mat-sys-primary-dark), 0.95);
+        }
+      }
+
+      .mat-mdc-input-element {
+        color: white;
+      }
+
+      .mat-mdc-form-field-subscript-wrapper {
+        color: #ff8a65; // Error text color in dark mode
+      }
+    }
+
+    // Select panel in dark mode
+    .mat-mdc-select-panel {
+      background-color: rgba(var(--mat-sys-primary-dark), 0.95);
+      
+      .mat-mdc-option {
+        color: white;
+        
+        &:hover:not(.mdc-list-item--disabled),
+        &.mdc-list-item--selected:not(.mdc-list-item--disabled) {
+          background-color: rgba(var(--mat-sys-primary-dark), 0.95);
+        }
+      }
+    }
+
+    // Datepicker in dark mode
+    .mat-datepicker-content {
+      background-color: rgba(var(--mat-sys-primary-dark), 0.95);
+      color: white;
+      
+      .mat-calendar-body-cell-content {
+        color: white;
+      }
+      
+      .mat-calendar-body-selected {
+        background-color: #7986cb;
+        color: white;
+      }
+    }
+   
+
+  }
+}
+
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+// Enhanced fill appearance with better labels
+.mat-mdc-form-field {
+  @include mat.form-field-density(-5); 
+  
+  // Label styling
+  .mdc-floating-label {
+    font-size: 14px;
+    color: rgba(0, 0, 0, 0.6);
+    
+    &--float-above {
+      color: #303f9f;
+    }
+  }
+
+  // Fill appearance customization
+  .mdc-text-field--filled:not(.mdc-text-field--disabled) {
+    background-color: rgba(0, 0, 0, 0.04);
+    border-radius: 4px 4px 0 0;
+    transition: background-color 0.2s ease;
+    
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.08);
+    }
+    
+    &.mdc-text-field--focused {
+      background-color: rgba(0, 0, 0, 0.04);
+    }
+  }
+
+  // Input text styling
+  .mat-mdc-input-element {
+    font-size: 14px;
+    padding-top: 4px;
+  }
+
+  // Error message styling
+  .mat-mdc-form-field-error {
+    font-size: 12px;
+    line-height: 1.3;
+  }
+}
+
+// Submit button styling
+.submit-container {
+  margin-top: 4px;
+  display: flex;
+  justify-content: flex-end;
+  
+  .submit-btn {
+    padding: 0 16px;
+    height: 32px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    
+    .mat-icon {
+      margin-left: 4px;
+      font-size: 16px;
+    }
+  }
+}
+
+@media (max-width: 600px) {
+  .modern-form {
+    padding: 24px;
+    margin: 1rem;
+    border-radius: 8px;
+    width: calc(100% - 2rem); // Ensure full width minus margins
+  }
+  
+  .grid-2 {
+    grid-template-columns: 1fr; // Change to single column
+    gap: 12px; // Slightly larger gap for mobile
+  }
+
+  // Make all form fields consistent
+  .mat-mdc-form-field {
+    width: 100% !important; // Force full width
+    min-width: 100% !important; // Prevent any shrinking
+    
+    // Ensure consistent input sizes
+    .mat-mdc-text-field-wrapper {
+      width: 100% !important;
+    }
+    
+    // Make labels consistent
+    .mdc-floating-label {
+      font-size: 14px !important;
+    }
+    
+    // Make input text consistent
+    .mat-mdc-input-element {
+      font-size: 14px !important;
+    }
+  }
+
+  // Special case for select dropdowns
+  .mat-mdc-select {
+    width: 100% !important;
+  }
+
+  // Datepicker inputs
+  .mat-datepicker-input {
+    width: 100% !important;
+  }
+
+  // Submit button container
+  .submit-container {
+    justify-content: center; // Center button on mobile
+    
+
+  }
+}

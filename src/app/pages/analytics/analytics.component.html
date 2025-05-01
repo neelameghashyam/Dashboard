@@ -1,0 +1,227 @@
+<div class="form-container" [@fadeIn] [class.dark-mode]="darkModeService.darkMode()">
+  <div *ngIf="showSuccessMessage" class="success-message">
+    <mat-icon>check_circle</mat-icon>
+    <span>Form submitted successfully!</span>
+  </div>
+
+  <mat-horizontal-stepper [linear]="isLinear" #stepper [orientation]="isMobile ? 'vertical' : 'horizontal'">
+    <!-- Step 1: Personal Details -->
+    <mat-step [stepControl]="firstFormGroup" label="Personal Details" [@slideIn]>
+      <form [formGroup]="firstFormGroup">
+        <h2>Personal Information</h2>
+        
+        <div class="form-grid">
+          <mat-form-field appearance="fill">
+            <mat-label>First Name</mat-label>
+            <input matInput formControlName="firstName" required placeholder="First Name">
+            <mat-error *ngIf="firstName?.hasError('required')">
+              First name is required
+            </mat-error>
+            <mat-error *ngIf="firstName?.hasError('minlength')">
+              Minimum 2 characters required
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill">
+            <mat-label>Last Name</mat-label>
+            <input matInput formControlName="lastName" required placeholder="Last Name">
+            <mat-error *ngIf="lastName?.hasError('required')">
+              Last name is required
+            </mat-error>
+            <mat-error *ngIf="lastName?.hasError('minlength')">
+              Minimum 2 characters required
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill">
+            <mat-label>Email</mat-label>
+            <input matInput formControlName="email" type="email" required placeholder="Email">
+            <mat-error *ngIf="email?.hasError('required')">
+              Email is required
+            </mat-error>
+            <mat-error *ngIf="email?.hasError('email')">
+              Please enter a valid email
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill">
+            <mat-label>Phone Number</mat-label>
+            <input matInput formControlName="phone" type="tel" placeholder="Phone Number">
+            <mat-error *ngIf="phone?.hasError('pattern')">
+              Please enter a valid phone number (10-15 digits)
+            </mat-error>
+          </mat-form-field>
+        </div>
+        
+        <div class="stepper-actions">
+          <button mat-button matStepperNext color="primary" [disabled]="firstFormGroup.invalid">Next</button>
+        </div>
+      </form>
+    </mat-step>
+
+    <!-- Step 2: Demographic Info -->
+    <mat-step [stepControl]="secondFormGroup" label="Demographic Info" [@slideIn]>
+      <form [formGroup]="secondFormGroup">
+        <h2>Additional Information</h2>
+        <p class="step-subtitle">Help us know you better</p>
+        
+        <div class="form-grid">
+          <mat-form-field appearance="fill">
+            <mat-label>Gender</mat-label>
+            <mat-select formControlName="gender" required>
+              <mat-option *ngFor="let gender of genders" [value]="gender.value">
+                {{ gender.viewValue }}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="gender?.hasError('required')">
+              Gender is required
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill">
+            <mat-label>Date of Birth</mat-label>
+            <input matInput [matDatepicker]="dobPicker" formControlName="dob" required>
+            <mat-datepicker-toggle matSuffix [for]="dobPicker"></mat-datepicker-toggle>
+            <mat-datepicker #dobPicker></mat-datepicker>
+            <mat-error *ngIf="dob?.hasError('required')">
+              Date of birth is required
+            </mat-error>
+          </mat-form-field>
+
+          <div class="age-group-section" [class.dark-mode]="darkModeService.darkMode()">
+            <h3>Age Group</h3>
+            <mat-selection-list formControlName="ageGroup" class="age-group-grid">
+              <mat-list-option *ngFor="let age of ageGroups" [value]="age">
+              <h3> {{ age }}</h3> 
+              </mat-list-option>
+            </mat-selection-list>
+            <mat-error *ngIf="ageGroup?.invalid && (ageGroup?.dirty || ageGroup?.touched)">
+              Please select at least one age group
+            </mat-error>
+          </div>
+        </div>
+        
+        <div class="stepper-actions">
+          <button mat-button matStepperPrevious>Back</button>
+          <button mat-button matStepperNext color="primary" [disabled]="secondFormGroup.invalid">Next</button>
+        </div>
+      </form>
+    </mat-step>
+
+    <!-- Step 3: Address -->
+    <mat-step [stepControl]="thirdFormGroup" label="Address" [@slideIn]>
+      <form [formGroup]="thirdFormGroup">
+        <h2>Address Information</h2>
+        <p class="step-subtitle">Where can we reach you?</p>
+        
+        <div class="form-grid">
+          <mat-form-field appearance="fill">
+            <mat-label>Address</mat-label>
+            <textarea matInput formControlName="address" required placeholder="Address"></textarea>
+            <mat-error *ngIf="address?.hasError('required')">
+              Address is required
+            </mat-error>
+            <mat-error *ngIf="address?.hasError('minlength')">
+              Minimum 10 characters required
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill">
+            <mat-label>Country</mat-label>
+            <mat-select formControlName="country" required>
+              <mat-option *ngFor="let country of countries" [value]="country.value">
+                {{ country.viewValue }}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="country?.hasError('required')">
+              Country is required
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill">
+            <mat-label>State/Province</mat-label>
+            <mat-select formControlName="state" required>
+              <mat-option *ngFor="let state of states" [value]="state.value">
+                {{ state.viewValue }}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="state?.hasError('required')">
+              State is required
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill">
+            <mat-label>Zip/Postal Code</mat-label>
+            <input matInput formControlName="zipCode" required placeholder="Zip/Postal Code">
+            <mat-error *ngIf="zipCode?.hasError('required')">
+              Zip code is required
+            </mat-error>
+            <mat-error *ngIf="zipCode?.hasError('pattern')">
+              Please enter a valid zip code (5-10 digits)
+            </mat-error>
+          </mat-form-field>
+        </div>
+        
+        <div class="stepper-actions">
+          <button mat-button matStepperPrevious>Back</button>
+          <button mat-button color="primary" (click)="onSubmit(stepper)" [disabled]="thirdFormGroup.invalid">Review & Submit</button>
+        </div>
+      </form>
+    </mat-step>
+
+    <!-- Step 4: Review -->
+    <mat-step label="Review" [@slideIn]>
+      <div *ngIf="submittedData" class="review-container">
+        <h2>Review Your Information</h2>
+        <p class="step-subtitle">Please verify your details before submission</p>
+        
+        <div class="review-section">
+          <h3>Personal Information</h3>
+          <div class="review-item">
+            <strong>Name:</strong> {{ submittedData.firstName }} {{ submittedData.lastName }}
+          </div>
+          <div class="review-item">
+            <strong>Email:</strong> {{ submittedData.email }}
+          </div>
+          <div class="review-item">
+            <strong>Phone:</strong> {{ submittedData.phone || 'Not provided' }}
+          </div>
+        </div>
+
+        <div class="review-section">
+          <h3>Demographic Information</h3>
+          <div class="review-item">
+            <strong>Gender:</strong> {{ getGenderViewValue(submittedData.gender) }}
+          </div>
+          <div class="review-item">
+            <strong>Date of Birth:</strong> {{ submittedData.dob | date }}
+          </div>
+          <div class="review-item">
+            <strong>Age Group:</strong> {{ submittedData.ageGroup.join(', ') }}
+          </div>
+        </div>
+
+        <div class="review-section">
+          <h3>Address Information</h3>
+          <div class="review-item">
+            <strong>Address:</strong> {{ submittedData.address }}
+          </div>
+          <div class="review-item">
+            <strong>Country:</strong> {{ getCountryViewValue(submittedData.country) }}
+          </div>
+          <div class="review-item">
+            <strong>State:</strong> {{ getStateViewValue(submittedData.state) }}
+          </div>
+          <div class="review-item">
+            <strong>Zip Code:</strong> {{ submittedData.zipCode }}
+          </div>
+        </div>
+
+        <div class="stepper-actions">
+          <button mat-button matStepperPrevious>Back</button>
+          <button mat-button color="primary" (click)="finalSubmit(stepper)">Confirm & Submit</button>
+        </div>
+      </div>
+    </mat-step>
+  </mat-horizontal-stepper>
+</div>

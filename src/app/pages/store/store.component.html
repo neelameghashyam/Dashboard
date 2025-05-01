@@ -1,0 +1,116 @@
+<main class="task-manager-container" [class.dark-mode]="darkModeService.darkMode()">
+  <div class="task-manager-card">
+    <!-- Header -->
+    <div class="task-manager-header">
+      <h1>Task Manager</h1>
+      <span class="task-counter">
+        {{ store.completedTodos().length }} / {{ store.todos().length }} completed
+      </span>
+    </div>
+
+    <!-- Search -->
+    <div class="search-container">
+      <div class="search-input-wrapper">
+        <div class="search-icon">
+          <svg class="search-svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+        </div>
+        <input 
+          name="searchTodos" 
+          [(ngModel)]="searchTerm" 
+          class="search-input" 
+          placeholder="Search todos.." 
+          (ngModelChange)="store.updateSearchTerm($event)"
+        >
+      </div>
+    </div>
+
+    <form class="add-task-form">
+      <input
+        name="newTodoInput"
+        [(ngModel)]="newTodoTitle"
+        class="task-input"
+        placeholder="Add a new task..."
+        (keyup.enter)="submitNewTodo()" 
+      />
+      <button 
+        type="button" 
+        class="add-button"
+        [disabled]="!newTodoTitle?.trim()"
+        (click)="submitNewTodo()" 
+      >
+        Add
+      </button>
+    </form>
+
+    @if (store.todosLoading()) {
+      <div class="loading-indicator">Loading tasks...</div>
+    }
+    @else if (store.todosLoadingError()) {
+      <div class="error-message">Error loading tasks. Showing local data.</div>
+    }
+
+     <!-- Filters -->
+     <div class="filter-buttons">
+      <button
+        [class.active-filter]="store.filter() === 'all'"
+        (click)="store.changeFilter('all')"
+        class="filter-button"
+      >
+        All
+      </button>
+      <button
+        [class.active-filter]="store.filter() === 'active'"
+        (click)="store.changeFilter('active')"
+        class="filter-button"
+      >
+        Active
+      </button>
+      <button
+        [class.active-filter]="store.filter() === 'completed'"
+        (click)="store.changeFilter('completed')"
+        class="filter-button"
+      >
+        Completed
+      </button>
+    </div>
+    
+    <!-- Task List -->
+    <div class="task-list-container">
+      <ul class="task-list">
+        @for (task of store.filteredTodos(); track task.id) {
+          <li
+            (click)="store.toggleTodo(task.id)"
+            class="task-item"
+          >
+            <div class="task-content">
+              <div class="task-checkbox">
+                <input 
+                  type="checkbox" 
+                  [checked]="task.completed" 
+                  (click)="$event.stopPropagation()"
+                  (change)="store.toggleTodo(task.id)"
+                  class="checkbox-input"
+                />
+              </div>
+              <span 
+                [ngClass]="{ 'completed-task': task.completed }"
+                class="task-title"
+              >
+                {{ task.title }}
+              </span>
+            </div>
+          </li>
+        }
+        @empty {
+          <div class="empty-state">
+            No tasks found. Add one above!
+          </div>
+        }
+      </ul>
+    </div>
+
+   
+  </div>
+</main>
