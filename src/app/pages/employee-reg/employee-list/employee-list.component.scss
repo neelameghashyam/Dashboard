@@ -1,0 +1,191 @@
+@use '@angular/material' as mat;
+
+$light-background: #ffffff;
+$light-surface: #f5f5f5;
+$light-text: #333333;
+$light-text-secondary: #666666;
+$light-border: #e0e0e0;
+
+$dark-background: #4a4a4a;
+$dark-surface: #4a4a4a;
+$dark-surface-hover: #5a5a5a;
+$dark-border: #666666;
+$dark-text: #e0e0e0;
+$dark-text-secondary: #b0b0b0;
+
+$primary: #3f51b5;
+$primary-dark: #303f9f;
+
+.mdc-card {
+  margin: 2rem auto;
+  background-color: $light-background;
+  border-radius: 16px;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.1);
+  max-width: 1400px;
+  width: calc(100% - 4rem);
+  padding: 1.5rem;
+
+  &.dark-mode {
+    background-color: $dark-background;
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.4);
+    color: $dark-text;
+  }
+
+  .mat-mdc-card-header {
+    padding: 1rem 1.5rem;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+
+    .mdc-button {
+      background-color: $primary;
+      color: white;
+      border-radius: 8px;
+      padding: 0.6rem 1.2rem;
+      font-size: 0.95rem;
+      font-weight: 500;
+      text-transform: uppercase;
+
+      &:hover {
+        background-color: $primary-dark;
+      }
+    }
+  }
+}
+
+.search-container {
+  margin-right: auto;
+  width: 100%;
+  max-width: 300px;
+
+  .mat-mdc-form-field {
+    width: 100%;
+  }
+
+  .search-input {
+    font-size: 0.9rem;
+  }
+}
+
+.table-container {
+  overflow-x: auto;
+  width: 100%;
+}
+
+.mat-mdc-table {
+  width: 100%;
+  background-color: $light-surface;
+  border-radius: 8px;
+
+  .mat-mdc-header-cell {
+    background-color: $light-background;
+    color: $light-text;
+    font-weight: 600;
+    font-size: 0.95rem;
+    padding: 1rem;
+    border-bottom: 2px solid $light-border;
+  }
+
+  .mat-mdc-cell {
+    color: $light-text;
+    font-size: 0.9rem;
+    padding: 1rem;
+    border-bottom: 1px solid $light-border;
+
+    &:hover {
+      background-color: lighten($light-surface, 5%);
+    }
+  }
+
+  .mat-mdc-icon-button {
+    &.mat-primary {
+      color: $primary;
+
+      &:hover {
+        color: $primary-dark;
+      }
+    }
+
+    &.mat-warn {
+      color: red;
+
+      &:hover {
+        color: darken(red, 10%);
+      }
+    }
+  }
+}
+
+.mat-mdc-paginator {
+  background-color: $light-surface;
+  color: $light-text;
+  border-radius: 8px;
+  margin-top: 1rem;
+  padding: 0.5rem;
+}
+
+.dark-mode {
+  .mat-mdc-table {
+    background-color: $dark-surface;
+
+    .mat-mdc-header-cell {
+      background-color: $dark-background;
+      color: $dark-text;
+      border-bottom: 2px solid $dark-border;
+    }
+
+    .mat-mdc-cell {
+      color: $dark-text;
+      border-bottom: 1px solid $dark-border;
+
+      &:hover {
+        background-color: $dark-surface-hover;
+      }
+    }
+  }
+
+  .mat-mdc-paginator {
+    background-color: $dark-surface;
+    color: $dark-text;
+  }
+
+  .search-container {
+    .mat-mdc-form-field {
+      .mdc-text-field--filled:not(.mdc-text-field--disabled) {
+        background-color: $dark-surface;
+      }
+      .mat-mdc-input-element {
+        color: $dark-text;
+      }
+      .mdc-floating-label {
+        color: $dark-text-secondary;
+      }
+      .mat-mdc-icon {
+        color: $dark-text;
+      }
+    }
+  }
+}
+
+@media (max-width: 600px) {
+  .mdc-card {
+    margin: 1rem auto;
+    width: calc(100% - 2rem);
+    padding: 0.75rem;
+
+    .mat-mdc-card-header {
+      flex-direction: column;
+      align-items: flex-start;
+
+      .mdc-button {
+        width: 100%;
+        margin-top: 0.5rem;
+      }
+    }
+
+    .search-container {
+      max-width: 100%;
+      margin-bottom: 0.5rem;
+    }
+  }
+}

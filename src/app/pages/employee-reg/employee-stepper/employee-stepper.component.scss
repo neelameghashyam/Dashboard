@@ -1,0 +1,249 @@
+@use '@angular/material' as mat;
+
+// Color Palette
+$light-background: #ffffff;
+$light-surface: #fafafa;
+$light-text: #212121;
+$light-text-secondary: #757575;
+$light-border: #e0e0e0;
+$light-hover: #f5f5f5;
+
+$dark-background: #1e1e1e;
+$dark-surface: #2c2c2c;
+$dark-surface-hover: #383838;
+$dark-border: #424242;
+$dark-text: #e0e0e0;
+$dark-text-secondary: #a0a0a0;
+
+$primary: #1976d2;
+$primary-dark: #1565c0;
+$warn: #d32f2f;
+
+// Typography
+$font-family: 'Roboto', sans-serif;
+$font-size-base: 14px;
+$font-size-header: 16px;
+$font-size-title: 24px;
+
+.form-container {
+  max-width: 1200px;
+  margin: 32px auto;
+  padding: 32px;
+  background-color: transparent;
+  font-family: $font-family;
+
+  &.dark-mode {
+    background-color: transparent;
+  }
+
+  .mat-mdc-card {
+    background-color: $light-background;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    padding: 24px;
+
+    &.dark-mode {
+      background-color: $dark-surface;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      color: $dark-text;
+    }
+  }
+
+  .card-title {
+    font-size: $font-size-title;
+    font-weight: 500;
+    color: $light-text;
+    margin: 0 0 16px 0;
+
+    .dark-mode & {
+      color: $dark-text;
+    }
+  }
+
+  .section-header {
+    font-size: $font-size-header;
+    font-weight: 500;
+    color: $light-text;
+    margin: 24px 0 16px;
+    border-bottom: 1px solid $light-border;
+    padding-bottom: 8px;
+
+    .dark-mode & {
+      color: $dark-text;
+      border-bottom-color: $dark-border;
+    }
+  }
+
+  .form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 16px;
+  }
+
+  .skills-container,
+  .experience-container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 16px;
+
+    .skill-row {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 48px;
+      gap: 16px;
+      align-items: center;
+
+      @media (max-width: 960px) {
+        grid-template-columns: 1fr;
+        .mat-mdc-icon-button {
+          grid-column: 1;
+          justify-self: start;
+        }
+      }
+    }
+
+    .experience-row {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr 1fr 48px;
+      gap: 16px;
+      align-items: center;
+
+      @media (max-width: 960px) {
+        grid-template-columns: 1fr;
+        .mat-mdc-icon-button {
+          grid-column: 1;
+          justify-self: start;
+        }
+      }
+    }
+  }
+
+  .mat-mdc-form-field {
+    width: 100%;
+    font-size: $font-size-base;
+
+    .mdc-text-field--outlined {
+      background-color: $light-surface;
+
+      .dark-mode & {
+        background-color: $dark-surface;
+      }
+    }
+
+    .mat-mdc-input-element {
+      color: $light-text;
+
+      .dark-mode & {
+        color: $dark-text;
+      }
+    }
+
+    .mdc-floating-label {
+      color: $light-text-secondary;
+
+      .dark-mode & {
+        color: $dark-text-secondary;
+      }
+    }
+
+    .mat-mdc-form-field-error {
+      font-size: 12px;
+    }
+  }
+
+  .stepper-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 16px;
+    margin-top: 24px;
+    flex-wrap: wrap;
+
+    .mdc-button {
+      min-width: 120px;
+      border-radius: 8px;
+      padding: 8px 16px;
+      font-size: $font-size-base;
+      font-weight: 500;
+
+      &.mat-primary {
+        background-color: $primary;
+        color: $light-background;
+
+        &:hover {
+          background-color: $primary-dark;
+        }
+      }
+
+      &.mat-stroked-button {
+        border: 1px solid $light-border;
+        color: $light-text;
+
+        .dark-mode & {
+          border-color: $dark-border;
+          color: $dark-text;
+        }
+      }
+    }
+  }
+
+  .mat-mdc-card-actions {
+    display: flex;
+    justify-content: flex-end;
+    padding: 16px 0;
+    gap: 16px;
+
+    .mdc-button {
+      min-width: 120px;
+      border-radius: 8px;
+      padding: 8px 16px;
+      font-size: $font-size-base;
+      font-weight: 500;
+
+      &.mat-warn {
+        border: 1px solid $warn;
+        color: $warn;
+
+        &:hover {
+          background-color: rgba($warn, 0.1);
+        }
+      }
+    }
+  }
+
+  .mat-mdc-stroked-button {
+    &.mat-primary {
+      border-color: $primary;
+      color: $primary;
+
+      &:hover {
+        background-color: rgba($primary, 0.1);
+      }
+    }
+  }
+
+  @media (max-width: 600px) {
+    margin: 16px;
+    padding: 16px;
+
+    .mat-mdc-card {
+      padding: 16px;
+    }
+
+    .stepper-actions {
+      flex-direction: column;
+      align-items: stretch;
+
+      .mdc-button {
+        width: 100%;
+      }
+    }
+
+    .mat-mdc-card-actions {
+      flex-direction: column;
+
+      .mdc-button {
+        width: 100%;
+      }
+    }
+  }
+}

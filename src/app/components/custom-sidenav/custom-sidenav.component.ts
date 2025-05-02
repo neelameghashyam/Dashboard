@@ -31,7 +31,9 @@ export class CustomSidenavComponent {
     { icon: 'analytics', label: 'Analytics', route: 'analytics' },
     { icon: 'comment', label: 'Comments', route: 'comments' },
     { icon: 'store', label: 'Store', route: 'store' },
-    { icon: 'group', label: 'Employee', route: 'employee' }
+    { icon: 'group', label: 'Employee', route: 'employee' },
+    { icon: 'person_add', label: 'Employee Registration', route: 'emp-reg' },
+
   ]);
 
   sideNavCollapsed = signal(false);
