@@ -1,96 +1,96 @@
-<div class="form-container">
+<div class="form-container" [class.dark-mode]="darkModeService.darkMode()">
   <mat-card>
     <mat-card-header>
       <h2 class="card-title">{{ title }}</h2>
     </mat-card-header>
-    <mat-card-content>
+    <mat-card-content [class.dark-mode]="darkModeService.darkMode()">
       <mat-horizontal-stepper #stepper [linear]="true">
         <!-- Step 1: Basic Details -->
         <mat-step [stepControl]="basicDetailsForm" label="Basic Details">
-          <form [formGroup]="basicDetailsForm">
+          <form [formGroup]="basicDetailsForm" [class.dark-mode]="darkModeService.darkMode()">
             <div class="section-header">Personal Information</div>
             <div class="form-grid">
-              <mat-form-field>
+              <mat-form-field appearance="fill">
                 <mat-label>Full Name</mat-label>
                 <input matInput formControlName="empName" />
               </mat-form-field>
-              <mat-form-field>
+              <mat-form-field appearance="fill">
                 <mat-label>Official Email</mat-label>
                 <input matInput formControlName="empEmailId" type="email" />
               </mat-form-field>
-              <mat-form-field>
+              <mat-form-field appearance="fill">
                 <mat-label>Personal Email</mat-label>
                 <input matInput formControlName="empPersonalEmailId" type="email" />
               </mat-form-field>
-              <mat-form-field>
+              <mat-form-field appearance="fill">
                 <mat-label>Contact Number</mat-label>
                 <input matInput formControlName="empContactNo" />
               </mat-form-field>
-              <mat-form-field>
+              <mat-form-field appearance="fill">
                 <mat-label>Alternate Contact Number</mat-label>
                 <input matInput formControlName="empAltContactNo" />
               </mat-form-field>
             </div>
             <div class="section-header">Professional Details</div>
             <div class="form-grid">
-              <mat-form-field>
+              <mat-form-field appearance="fill">
                 <mat-label>Designation ID</mat-label>
                 <input matInput formControlName="empDesignationId" type="number" />
               </mat-form-field>
-              <mat-form-field>
+              <mat-form-field appearance="fill">
                 <mat-label>Role ID</mat-label>
                 <input matInput formControlName="roleId" type="number" />
               </mat-form-field>
-              <mat-form-field>
+              <mat-form-field appearance="fill">
                 <mat-label>Experience (Years)</mat-label>
                 <input matInput formControlName="empExpTotalYear" type="number" />
               </mat-form-field>
-              <mat-form-field>
+              <mat-form-field appearance="fill">
                 <mat-label>Experience (Months)</mat-label>
                 <input matInput formControlName="empExpTotalMonth" type="number" />
               </mat-form-field>
             </div>
             <div class="section-header">Current Address</div>
             <div class="form-grid">
-              <mat-form-field>
+              <mat-form-field appearance="fill">
                 <mat-label>City</mat-label>
                 <input matInput formControlName="empCity" />
               </mat-form-field>
-              <mat-form-field>
+              <mat-form-field appearance="fill">
                 <mat-label>State</mat-label>
                 <input matInput formControlName="empState" />
               </mat-form-field>
-              <mat-form-field>
+              <mat-form-field appearance="fill">
                 <mat-label>Pin Code</mat-label>
                 <input matInput formControlName="empPinCode" />
               </mat-form-field>
-              <mat-form-field>
+              <mat-form-field appearance="fill">
                 <mat-label>Address</mat-label>
                 <input matInput formControlName="empAddress" />
               </mat-form-field>
             </div>
             <div class="section-header">Permanent Address</div>
             <div class="form-grid">
-              <mat-form-field>
+              <mat-form-field appearance="fill">
                 <mat-label>City</mat-label>
                 <input matInput formControlName="empPerCity" />
               </mat-form-field>
-              <mat-form-field>
+              <mat-form-field appearance="fill">
                 <mat-label>State</mat-label>
                 <input matInput formControlName="empPerState" />
               </mat-form-field>
-              <mat-form-field>
+              <mat-form-field appearance="fill">
                 <mat-label>Pin Code</mat-label>
                 <input matInput formControlName="empPerPinCode" />
               </mat-form-field>
-              <mat-form-field>
+              <mat-form-field appearance="fill">
                 <mat-label>Address</mat-label>
                 <input matInput formControlName="empPerAddress" />
               </mat-form-field>
             </div>
             <div class="section-header">Account Details</div>
             <div class="form-grid">
-              <mat-form-field>
+              <mat-form-field appearance="fill">
                 <mat-label>Password</mat-label>
                 <input matInput formControlName="password" type="password" />
               </mat-form-field>
@@ -104,26 +104,33 @@
         </mat-step>
 
         <!-- Step 2: Skills -->
-        <mat-step [stepControl]="skillsForm" label="Skills">
-          <form [formGroup]="skillsForm">
+        <mat-step [stepControl]="skillsForm" label="Skills" >
+          <form [formGroup]="skillsForm" [class.dark-mode]="darkModeService.darkMode()">
             <div class="section-header">Technical Skills</div>
             <div class="skills-container">
-              <div *ngFor="let skill of skills.controls; let i = index; trackBy: trackByIndex" [formGroupName]="i" class="skill-row">
-                <mat-form-field>
-                  <mat-label>Skill</mat-label>
-                  <input matInput formControlName="skill" />
-                </mat-form-field>
-                <mat-form-field>
-                  <mat-label>Years of Experience</mat-label>
-                  <input matInput formControlName="totalYearExp" type="number" />
-                </mat-form-field>
-                <mat-form-field>
-                  <mat-label>Last Version Used</mat-label>
-                  <input matInput formControlName="lastVersionUsed" />
-                </mat-form-field>
-                <button mat-icon-button color="warn" (click)="removeSkill(i)" aria-label="Remove skill">
-                  <mat-icon>delete</mat-icon>
-                </button>
+              <div *ngIf="skills.controls.length === 0" class="no-items">
+                No skills added yet.
+              </div>
+              <div formArrayName="skills">
+                <div *ngFor="let skill of skills.controls; let i = index; trackBy: trackByIndex" class="skill-row">
+                  <div [formGroupName]="i" class="skill-row-inner">
+                    <mat-form-field appearance="fill">
+                      <mat-label>Skill</mat-label>
+                      <input matInput formControlName="skill" placeholder="e.g., JavaScript" />
+                    </mat-form-field>
+                    <mat-form-field appearance="fill">
+                      <mat-label>Years of Experience</mat-label>
+                      <input matInput formControlName="totalYearExp" type="number" placeholder="e.g., 3" />
+                    </mat-form-field>
+                    <mat-form-field appearance="fill">
+                      <mat-label>Last Version Used</mat-label>
+                      <input matInput formControlName="lastVersionUsed" placeholder="e.g., ES2020" />
+                    </mat-form-field>
+                    <button mat-icon-button color="warn" (click)="removeSkill(i)" aria-label="Remove skill">
+                      <mat-icon>delete</mat-icon>
+                    </button>
+                  </div>
+                </div>
               </div>
               <button mat-stroked-button color="primary" (click)="addSkill()">
                 <mat-icon>add</mat-icon> Add Skill
@@ -142,37 +149,44 @@
 
         <!-- Step 3: Experience -->
         <mat-step [stepControl]="experienceForm" label="Experience">
-          <form [formGroup]="experienceForm">
+          <form [formGroup]="experienceForm" [class.dark-mode]="darkModeService.darkMode()">
             <div class="section-header">Work Experience</div>
             <div class="experience-container">
-              <div *ngFor="let exp of experiences.controls; let i = index; trackBy: trackByIndex" [formGroupName]="i" class="experience-row">
-                <mat-form-field>
-                  <mat-label>Company Name</mat-label>
-                  <input matInput formControlName="companyName" />
-                </mat-form-field>
-                <mat-form-field>
-                  <mat-label>Start Date</mat-label>
-                  <input matInput [matDatepicker]="startPicker" formControlName="startDate" />
-                  <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
-                  <mat-datepicker #startPicker></mat-datepicker>
-                </mat-form-field>
-                <mat-form-field>
-                  <mat-label>End Date</mat-label>
-                  <input matInput [matDatepicker]="endPicker" formControlName="endDate" />
-                  <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
-                  <mat-datepicker #endPicker></mat-datepicker>
-                </mat-form-field>
-                <mat-form-field>
-                  <mat-label>Designation</mat-label>
-                  <input matInput formControlName="designation" />
-                </mat-form-field>
-                <mat-form-field>
-                  <mat-label>Projects Worked On</mat-label>
-                  <input matInput formControlName="projectsWorkedon" />
-                </mat-form-field>
-                <button mat-icon-button color="warn" (click)="removeExperience(i)" aria-label="Remove experience">
-                  <mat-icon>delete</mat-icon>
-                </button>
+              <div *ngIf="experiences.controls.length === 0" class="no-items">
+                No experiences added yet.
+              </div>
+              <div formArrayName="experiences">
+                <div *ngFor="let exp of experiences.controls; let i = index; trackBy: trackByIndex" class="experience-row">
+                  <div [formGroupName]="i" class="experience-row-inner">
+                    <mat-form-field appearance="fill">
+                      <mat-label>Company Name</mat-label>
+                      <input matInput formControlName="companyName" placeholder="e.g., Tech Corp" />
+                    </mat-form-field>
+                    <mat-form-field appearance="fill">
+                      <mat-label>Start Date</mat-label>
+                      <input matInput [matDatepicker]="startPicker" formControlName="startDate" />
+                      <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+                      <mat-datepicker #startPicker></mat-datepicker>
+                    </mat-form-field>
+                    <mat-form-field appearance="fill">
+                      <mat-label>End Date</mat-label>
+                      <input matInput [matDatepicker]="endPicker" formControlName="endDate" />
+                      <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+                      <mat-datepicker #endPicker></mat-datepicker>
+                    </mat-form-field>
+                    <mat-form-field appearance="fill">
+                      <mat-label>Designation</mat-label>
+                      <input matInput formControlName="designation" placeholder="e.g., Software Engineer" />
+                    </mat-form-field>
+                    <mat-form-field appearance="fill">
+                      <mat-label>Projects Worked On</mat-label>
+                      <input matInput formControlName="projectsWorkedon" placeholder="e.g., Project X, Project Y" />
+                    </mat-form-field>
+                    <button mat-icon-button color="warn" (click)="removeExperience(i)" aria-label="Remove experience">
+                      <mat-icon>delete</mat-icon>
+                    </button>
+                  </div>
+                </div>
               </div>
               <button mat-stroked-button color="primary" (click)="addExperience()">
                 <mat-icon>add</mat-icon> Add Experience

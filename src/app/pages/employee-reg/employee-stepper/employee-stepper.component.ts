@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray } from '@angular/forms';
 import { EmployeeStore } from '../store/emp-store';
 import { Employee, EmployeeSkill, EmployeeExperience } from '../employee.model';
@@ -45,11 +45,14 @@ export class EmployeeStepperComponent implements OnInit {
   private fb = inject(FormBuilder);
   private store = inject(EmployeeStore);
   private toastr = inject(ToastrService);
-  private darkModeService = inject(DarkModeService);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
+  private cdr = inject(ChangeDetectorRef);
 
-  constructor() {
+  constructor(
+
+    public darkModeService: DarkModeService
+  ) {
     this.basicDetailsForm = this.fb.group({
       empName: [''],
       empEmailId: [''],
